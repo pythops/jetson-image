@@ -1,0 +1,6 @@
+---
+- name: Customize Jetson rootfs
+  hosts: jetson
+  connection: chroot
+  roles:
+    - jetson

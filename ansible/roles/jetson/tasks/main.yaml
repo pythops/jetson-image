@@ -1,0 +1,70 @@
+---
+- name: Update sources.list
+  template:
+    src: etc/apt/sources.list
+    dest: /etc/apt/sources.list
+    owner: root
+    group: root
+    mode: 0644
+
+- name: Upgrade packages
+  apt:
+    upgrade: dist
+    update_cache: yes
+
+- name: Install packages
+  apt:
+    name: "{{ item }}"
+  loop:
+    - bash-completion
+    - build-essential
+    - btrfs-tools
+    - cmake
+    - dnsutils
+    - htop
+    - iotop
+    - isc-dhcp-client
+    - iputils-ping
+    - kmod
+    - linux-firmware
+    - locales
+    - net-tools
+    - netplan.io
+    - pciutils
+    - python3-dev
+    - ssh
+    - sudo
+    - systemd
+    - udev
+    - unzip
+    - usbutils
+    - vim
+
+- name: Generate locales
+  locale_gen:
+    name: en_US.UTF-8
+    state: present
+
+- name: Enable services
+  shell: systemctl enable {{ item }}
+  loop:
+    - ssh
+    - systemd-networkd
+    - systemd-resolved
+
+- name: Create network conf
+  template:
+    src: etc/netplan/netcfg.yaml
+    dest: /etc/netplan/netcfg.yaml
+    owner: root
+    group: root
+    mode: 0644
+
+- name: Create new user
+  user:
+    name: "{{ new_user.name }}"
+    shell: "{{ new_user.shell }}"
+    password: "{{ new_user.password | password_hash('sha512') }}"
+    create_home: yes
+    groups: sudo
+    state: present

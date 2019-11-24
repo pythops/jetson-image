@@ -1,0 +1,7 @@
+---
+ubuntu_release: bionic
+
+new_user:
+  name: pythops
+  shell: /bin/bash
+  password: pythops
