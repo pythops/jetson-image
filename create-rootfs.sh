@@ -23,12 +23,8 @@ fi
 
 # Install prerequisites packages
 printf "\e[32mInstall the dependencies...  "
-for pkg in qemu-user-static debootstrap coreutils parted wget gdisk e2fsprogs; do
-	dpkg -l | grep $pkg > /dev/null
-	if [ $? -ne 0 ]; then
-		apt install -y $pkg > /dev/null
-	fi
-done
+apt-get update > /dev/null
+apt-get install --no-install-recommends -y qemu-user-static debootstrap coreutils parted wget gdisk e2fsprogs > /dev/null
 printf "[OK]\n"
 
 # Create rootfs directory
