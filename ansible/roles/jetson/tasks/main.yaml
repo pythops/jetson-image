@@ -39,6 +39,7 @@
     - unzip
     - usbutils
     - vim
+    - wpasupplicant
 
 - name: Generate locales
   locale_gen:
