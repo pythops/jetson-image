@@ -20,6 +20,7 @@
     - build-essential
     - btrfs-tools
     - cmake
+    - curl
     - dnsutils
     - htop
     - iotop
