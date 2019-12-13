@@ -70,3 +70,13 @@
     create_home: yes
     groups: sudo
     state: present
+
+- name: Download pip
+  get_url:
+    url: https://bootstrap.pypa.io/get-pip.py
+    dest: /tmp/get-pip.py
+
+- name: Install pip
+  shell: python3 /tmp/get-pip.py --user
+  become: yes
+  become_user: "{{ new_user.name }}"
