@@ -35,7 +35,7 @@ printf "[OK]\n"
 # Download ubuntu base image
 if [ ! "$(ls -A $JETSON_ROOTFS_DIR)" ]; then
 	printf "Download the base image...   "
-  	wget -qO- http://cdimage.ubuntu.com/ubuntu-base/releases/18.04.3/release/ubuntu-base-18.04.3-base-arm64.tar.gz | tar xzvf - -C $JETSON_ROOTFS_DIR > /dev/null
+  	wget -qO- http://cdimage.ubuntu.com/ubuntu-base/releases/18.04.4/release/ubuntu-base-18.04.4-base-arm64.tar.gz | tar xzvf - -C $JETSON_ROOTFS_DIR > /dev/null
 	printf "[OK]\n"
 else
 	printf "Base image already downloaded"
@@ -48,7 +48,7 @@ debootstrap \
         --keyring=/usr/share/keyrings/ubuntu-archive-keyring.gpg \
         --foreign \
         --variant=minbase \
-	--include=python3 \
+	--include=python3,libegl1,python3-apt \
         $RELEASE \
 	$JETSON_ROOTFS_DIR > /dev/null
 printf "[OK]\n"
