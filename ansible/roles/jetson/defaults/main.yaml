@@ -2,6 +2,6 @@
 ubuntu_release: bionic
 
 new_user:
-  name: pythops
+  name: trasee
   shell: /bin/bash
-  password: pythops
+  password: trasee
