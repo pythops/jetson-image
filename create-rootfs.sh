@@ -21,12 +21,6 @@ if [ ! $JETSON_ROOTFS_DIR ]; then
 	exit 1
 fi
 
-# Install prerequisites packages
-printf "\e[32mInstall the dependencies...  "
-apt-get update > /dev/null
-apt-get install --no-install-recommends -y qemu-user-static debootstrap coreutils parted wget gdisk e2fsprogs > /dev/null
-printf "[OK]\n"
-
 # Create rootfs directory
 printf "Create rootfs directory...    "
 mkdir -p $JETSON_ROOTFS_DIR
@@ -43,22 +37,19 @@ fi
 
 # Run debootsrap first stage
 printf "Run debootstrap first stage...  "
-debootstrap \
+fakechroot fakeroot -s .fakeroot.state debootstrap \
         --arch=$ARCH \
         --keyring=/usr/share/keyrings/ubuntu-archive-keyring.gpg \
         --foreign \
-        --variant=minbase \
+        --variant=fakechroot \
 	--include=python3,libegl1,python3-apt \
         $RELEASE \
-	$JETSON_ROOTFS_DIR > /dev/null
+	$JETSON_ROOTFS_DIR
 printf "[OK]\n"
-
-# Copy qemu-aarch64-static
-cp /usr/bin/qemu-aarch64-static $JETSON_ROOTFS_DIR/usr/bin
 
 # Run debootstrap second stage
 printf "Run debootstrap second stage... "
-chroot $JETSON_ROOTFS_DIR /bin/bash -c "/debootstrap/debootstrap --second-stage"  > /dev/null
+fakechroot fakeroot -s .fakeroot.state chroot $JETSON_ROOTFS_DIR /bin/bash -c "/debootstrap/debootstrap --second-stage --variant=fakechroot"
 printf "[OK]\n"
 
 printf "Success!\n"
