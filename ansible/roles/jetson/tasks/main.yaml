@@ -1,4 +1,12 @@
 ---
+- name: setup dns
+  template:
+    src: etc/resolv.conf
+    dest: /etc/resolv.conf
+    owner: root
+    group: root
+    mode: 0644
+    
 - name: Update sources.list
   template:
     src: etc/apt/sources.list
