@@ -24,7 +24,7 @@ fi
 # Install prerequisites packages
 printf "\e[32mInstall the dependencies...  "
 apt-get update > /dev/null
-apt-get install --no-install-recommends -y qemu-user-static debootstrap coreutils parted wget gdisk e2fsprogs > /dev/null
+apt-get install --no-install-recommends -y qemu-user-static debootstrap binfmt-support coreutils parted wget gdisk e2fsprogs > /dev/null
 printf "[OK]\n"
 
 # Create rootfs directory
