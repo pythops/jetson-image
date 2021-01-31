@@ -1,5 +1,5 @@
 ---
-- name: Update sources.list
+- name: Update /etc/apt/sources.list
   template:
     src: etc/apt/sources.list
     dest: /etc/apt/sources.list
@@ -12,13 +12,68 @@
     upgrade: dist
     update_cache: yes
 
-- name: Install packages
+- name: Install Nvidia required packages
   apt:
     name: "{{ item }}"
+    state: present
+  loop:
+    - libgles2
+    - libpangoft2-1.0-0
+    - libharfbuzz0b
+    - libgles2
+    - libdatrie1
+    - libxkbcommon0
+    - libwayland-egl1
+    - libwayland-cursor0
+    - libunwind8
+    - libpng16-16
+    - libpixman-1-0
+    - libjpeg-turbo8
+    - libinput10
+    - libgles2
+    - libevdev2
+    - libcairo2
+    - device-tree-compiler
+    - iso-codes
+    - libffi6
+    - libncursesw5
+    - libpython3-stdlib
+    - libpython3.8-minimal
+    - libpython3.8-stdlib
+    - libreadline8
+    - libtinfo5
+    - python3-minimal
+    - python3.8
+    - libglvnd0
+    - libdrm-common
+    - libdrm2
+    - libegl-mesa0
+    - libegl1
+    - libgbm1
+    - libglapi-mesa
+    - libwayland-server0
+    - libx11-xcb1
+    - libxcb-dri3-0
+    - libxcb-present0
+    - libxcb-sync1
+    - libxcb-xfixes0
+    - libxshmfence1
+    - libpython2-stdlib
+    - python2
+    - python2-minimal
+    - python-is-python2
+    - libgstreamer1.0-0
+    - libgstreamer-plugins-bad1.0-0
+    - libpangocairo-1.0-0
+
+- name: Install core packages
+  apt:
+    name: "{{ item }}"
+    state: present
   loop:
     - bash-completion
     - build-essential
-    - btrfs-tools
+    - btrfs-progs
     - cmake
     - curl
     - dnsutils
@@ -47,14 +102,24 @@
     name: en_US.UTF-8
     state: present
 
+- name: Configure systemd-resolve
+  ansible.builtin.template:
+    src: etc/systemd/resolved.conf
+    dest: /etc/systemd/resolved.conf
+    owner: root
+    group: root
+    mode: 0644
+
 - name: Enable services
-  shell: systemctl enable {{ item }}
+  ansible.builtin.systemd:
+    name: "{{ item }}"
+    enabled: yes
   loop:
     - ssh
     - systemd-networkd
     - systemd-resolved
 
-- name: Create network conf
+- name: Update network conf
   template:
     src: etc/netplan/netcfg.yaml
     dest: /etc/netplan/netcfg.yaml

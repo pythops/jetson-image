@@ -1,0 +1,4 @@
+195c195
+< LC_ALL=C chroot . dpkg -i --path-include="/usr/share/doc/*" "${deb_list[@]}"
+---
+> LC_ALL=C chroot . dpkg -i --force-overwrite --path-include="/usr/share/doc/*" "${deb_list[@]}"

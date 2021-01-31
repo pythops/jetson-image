@@ -1,49 +1,13 @@
-# See http://help.ubuntu.com/community/UpgradeNotes for how to upgrade to
-# newer versions of the distribution.
 deb http://ports.ubuntu.com/ubuntu-ports/ {{ ubuntu_release }} main restricted
-# deb-src http://ports.ubuntu.com/ubuntu-ports/ {{ ubuntu_release }} main restricted
-
-## Major bug fix updates produced after the final release of the
-## distribution.
 deb http://ports.ubuntu.com/ubuntu-ports/ {{ ubuntu_release }}-updates main restricted
-# deb-src http://ports.ubuntu.com/ubuntu-ports/ {{ ubuntu_release }}-updates main restricted
-
-## N.B. software from this repository is ENTIRELY UNSUPPORTED by the Ubuntu
-## team. Also, please note that software in universe WILL NOT receive any
-## review or updates from the Ubuntu security team.
 deb http://ports.ubuntu.com/ubuntu-ports/ {{ ubuntu_release }} universe
-# deb-src http://ports.ubuntu.com/ubuntu-ports/ {{ ubuntu_release }} universe
 deb http://ports.ubuntu.com/ubuntu-ports/ {{ ubuntu_release }}-updates universe
-# deb-src http://ports.ubuntu.com/ubuntu-ports/ {{ ubuntu_release }}-updates universe
-
-## N.B. software from this repository is ENTIRELY UNSUPPORTED by the Ubuntu
-## team, and may not be under a free licence. Please satisfy yourself as to
-## your rights to use the software. Also, please note that software in
-## multiverse WILL NOT receive any review or updates from the Ubuntu
-## security team.
 deb http://ports.ubuntu.com/ubuntu-ports/ {{ ubuntu_release }} multiverse
-# deb-src http://ports.ubuntu.com/ubuntu-ports/ {{ ubuntu_release }} multiverse
 deb http://ports.ubuntu.com/ubuntu-ports/ {{ ubuntu_release }}-updates multiverse
-# deb-src http://ports.ubuntu.com/ubuntu-ports/ {{ ubuntu_release }}-updates multiverse
-
-## N.B. software from this repository may not have been tested as
-## extensively as that contained in the main release, although it includes
-## newer versions of some applications which may provide useful features.
-## Also, please note that software in backports WILL NOT receive any review
-## or updates from the Ubuntu security team.
 deb http://ports.ubuntu.com/ubuntu-ports/ {{ ubuntu_release }}-backports main restricted universe multiverse
-# deb-src http://ports.ubuntu.com/ubuntu-ports/ {{ ubuntu_release }}-backports main restricted universe multiverse
-
-## Uncomment the following two lines to add software from Canonical's
-## 'partner' repository.
-## This software is not part of Ubuntu, but is offered by Canonical and the
-## respective vendors as a service to Ubuntu users.
-# deb http://archive.canonical.com/ubuntu {{ ubuntu_release }} partner
-# deb-src http://archive.canonical.com/ubuntu {{ ubuntu_release }} partner
-
 deb http://ports.ubuntu.com/ubuntu-ports/ {{ ubuntu_release }}-security main restricted
-# deb-src http://ports.ubuntu.com/ubuntu-ports/ {{ ubuntu_release }}-security main restricted
 deb http://ports.ubuntu.com/ubuntu-ports/ {{ ubuntu_release }}-security universe
-# deb-src http://ports.ubuntu.com/ubuntu-ports/ {{ ubuntu_release }}-security universe
 deb http://ports.ubuntu.com/ubuntu-ports/ {{ ubuntu_release }}-security multiverse
-# deb-src http://ports.ubuntu.com/ubuntu-ports/ {{ ubuntu_release }}-security multiverse
+
+# Needed for libffi6
+deb http://ports.ubuntu.com/ubuntu-ports/ bionic main
