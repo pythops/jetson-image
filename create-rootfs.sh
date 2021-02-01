@@ -41,7 +41,7 @@ else
 	printf "Base image already downloaded"
 fi
 
-# Run debootsrap first stage
+# Run debootstrap first stage
 printf "Run debootstrap first stage...  "
 debootstrap \
         --arch=$ARCH \
