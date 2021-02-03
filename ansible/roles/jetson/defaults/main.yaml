@@ -1,5 +1,5 @@
 ---
-ubuntu_release: bionic
+ubuntu_release: focal
 
 new_user:
   name: pythops

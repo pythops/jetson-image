@@ -2,11 +2,11 @@
 
 #
 # Author: Badr BADRI © pythops
-# 
+#
 
 set -e
 
-BSP=https://developer.nvidia.com/embedded/r32-2-3_Release_v1.0/t210ref_release_aarch64/Tegra210_Linux_R32.2.3_aarch64.tbz2
+BSP=https://developer.nvidia.com/embedded/L4T/r32_Release_v4.4/r32_Release_v4.4-GMC3/T210/Tegra210_Linux_R32.4.4_aarch64.tbz2
 
 # Check if the user is not root
 if [ "x$(whoami)" != "xroot" ]; then
@@ -41,6 +41,8 @@ fi
 
 cp -rp $JETSON_ROOTFS_DIR/*  $JETSON_BUILD_DIR/Linux_for_Tegra/rootfs/ > /dev/null
 
+patch $JETSON_BUILD_DIR/Linux_for_Tegra/nv_tegra/nv-apply-debs.sh < patches/nv-apply-debs.diff
+
 pushd $JETSON_BUILD_DIR/Linux_for_Tegra/ > /dev/null
 
 printf "Extract L4T...        "
@@ -48,10 +50,9 @@ printf "Extract L4T...        "
 printf "[OK]\n"
 
 printf "Create image...       "
-rootfs_size=$(du -hsBM $JETSON_BUILD_DIR/Linux_for_Tegra/rootfs | awk '{print $1}')
-rootfs_size=$(echo $((${rootfs_size%?} + 200))"M")
-./create-jetson-nano-sd-card-image.sh -o jetson.img -s $rootfs_size -r 200
+pushd $JETSON_BUILD_DIR/Linux_for_Tegra/tools
+./jetson-disk-image-creator.sh -o jetson.img -b jetson-nano -r 200
 printf "OK\n"
 
 printf "\e[32mImage created successfully\n"
-printf "Image location: $JETSON_BUILD_DIR/Linux_for_Tegra/jetson.img\n"
+printf "Image location: $JETSON_BUILD_DIR/Linux_for_Tegra/tools/jetson.img\n"

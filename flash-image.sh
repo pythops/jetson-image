@@ -23,15 +23,15 @@ fi
 if [ ! -b $2 ] || [ "$(lsblk | grep -w $(basename $2) | awk '{print $6}')" != "disk" ]; then
 	printf "\e[31m$2 is not a block device\e[0m\n"
 	exit 1
-fi	
+fi
 
-# Check jetson image file 
+# Check jetson image file
 if [ ! -e $1 ] || [ ! -s $1 ]; then
 	printf "\e[31m$1 does not exist or has 0 B in size\e[0m\n"
 	exit 1
 fi
 
-# Unmount sdcard 
+# Unmount sdcard
 if [ "$(mount | grep $2)" ]; then
 	printf "\e[32mUnmount SD card... "
 	for mount_point in $(mount | grep $2 | awk '{ print $1}'); do
@@ -47,7 +47,7 @@ printf "\e[32m[OK]\e[0m\n"
 
 # Extend the partition
 printf "\e[32mExtend the partition... "
-partprobe $2 > /dev/null
+partprobe $2 &> /dev/null
 
 sgdisk -e $2 > /dev/null
 
