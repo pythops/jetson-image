@@ -32,15 +32,6 @@ printf "Create rootfs directory...    "
 mkdir -p $JETSON_ROOTFS_DIR
 printf "[OK]\n"
 
-# Download ubuntu base image
-if [ ! "$(ls -A $JETSON_ROOTFS_DIR)" ]; then
-	printf "Download the base image...   "
-  	wget -qO- http://cdimage.ubuntu.com/ubuntu-base/releases/18.04.4/release/ubuntu-base-18.04.5-base-arm64.tar.gz | tar xzvf - -C $JETSON_ROOTFS_DIR > /dev/null
-	printf "[OK]\n"
-else
-	printf "Base image already downloaded"
-fi
-
 # Run debootstrap first stage
 printf "Run debootstrap first stage...  "
 debootstrap \
