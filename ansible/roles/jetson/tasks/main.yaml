@@ -102,22 +102,13 @@
     name: en_US.UTF-8
     state: present
 
-- name: Configure systemd-resolve
-  ansible.builtin.template:
-    src: etc/systemd/resolved.conf
-    dest: /etc/systemd/resolved.conf
-    owner: root
-    group: root
-    mode: 0644
-
 - name: Enable services
-  ansible.builtin.systemd:
+  systemd:
     name: "{{ item }}"
     enabled: yes
   loop:
     - ssh
     - systemd-networkd
-    - systemd-resolved
 
 - name: Update network conf
   template:

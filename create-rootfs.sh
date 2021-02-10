@@ -43,6 +43,12 @@ debootstrap \
 	$JETSON_ROOTFS_DIR > /dev/null
 printf "[OK]\n"
 
+cat <<EOF > $JETSON_ROOTFS_DIR/etc/resolv.conf
+nameserver 1.1.1.1
+EOF
+
+chattr +i $JETSON_ROOTFS_DIR/etc/resolv.conf
+
 cp /usr/bin/qemu-aarch64-static $JETSON_ROOTFS_DIR/usr/bin
 
 # Run debootstrap second stage
