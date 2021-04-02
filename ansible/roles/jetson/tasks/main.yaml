@@ -49,6 +49,8 @@
     - libdrm2
     - libegl-mesa0
     - libegl1
+    - libegl1-mesa
+    - libgtk-3-0
     - libgbm1
     - libglapi-mesa
     - libwayland-server0
