@@ -1,4 +1,8 @@
-195c195
-< LC_ALL=C chroot . dpkg -i --path-include="/usr/share/doc/*" "${deb_list[@]}"
+191,193d190
+< mknod -m 444 "${L4T_ROOTFS_DIR}/dev/random" c 1 8
+< mknod -m 444 "${L4T_ROOTFS_DIR}/dev/urandom" c 1 9
+< 
+200c197
+< LC_ALL=C PYTHONHASHSEED=0 chroot . dpkg -i --path-include="/usr/share/doc/*" "${deb_list[@]}"
 ---
-> LC_ALL=C chroot . dpkg -i --force-overwrite --path-include="/usr/share/doc/*" "${deb_list[@]}"
+> LC_ALL=C PYTHONHASHSEED=0 chroot . dpkg -i --force-overwrite --path-include="/usr/share/doc/*" "${deb_list[@]}"
