@@ -26,6 +26,12 @@ if [ ! "$(ls -A $JETSON_ROOTFS_DIR)" ]; then
 	exit 1
 fi
 
+# Check if board type is specified
+if [ ! $JETSON_NANO_BOARD ]; then
+	printf "\e[31mJetson nano board type must be specified\e[0m\n"
+	exit 1
+fi
+
 printf "\e[32mBuild the image ...\n"
 
 # Create the build dir if it does not exists
@@ -49,10 +55,26 @@ printf "Extract L4T...        "
 ./apply_binaries.sh > /dev/null
 printf "[OK]\n"
 
-printf "Create image...       "
 pushd $JETSON_BUILD_DIR/Linux_for_Tegra/tools
-./jetson-disk-image-creator.sh -o jetson.img -b jetson-nano -r 200
-printf "OK\n"
+case "$JETSON_NANO_BOARD" in
+    jetson-nano-2gb)
+        printf "Create image for Jetson nano 2GB board"
+        ./jetson-disk-image-creator.sh -o jetson.img -b jetson-nano-2gb-devkit
+        printf "OK\n"
+        ;;
+
+    jetson-nano)
+        printf "Create image for Jetson nano board"
+        ./jetson-disk-image-creator.sh -o jetson.img -b jetson-nano -r 200
+        printf "OK\n"
+        ;;
+
+    *)
+	printf "\e[31mUnknown Jetson nano board type\e[0m\n"
+	exit 1
+        ;;
+esac
+
 
 printf "\e[32mImage created successfully\n"
 printf "Image location: $JETSON_BUILD_DIR/Linux_for_Tegra/tools/jetson.img\n"
