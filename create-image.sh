@@ -63,9 +63,15 @@ case "$JETSON_NANO_BOARD" in
         printf "OK\n"
         ;;
 
-    jetson-nano)
-        printf "Create image for Jetson nano board"
+    jetson-nano-4gb-a01)
+        printf "Create image for Jetson nano 4GB (A02) board"
         ./jetson-disk-image-creator.sh -o jetson.img -b jetson-nano -r 200
+        printf "OK\n"
+        ;;
+
+    jetson-nano-4gb-b01)
+        printf "Create image for Jetson nano 4GB (B01) board"
+        ./jetson-disk-image-creator.sh -o jetson.img -b jetson-nano -r 300
         printf "OK\n"
         ;;
 
