@@ -66,7 +66,7 @@ case "$JETSON_NANO_BOARD" in
     jetson-nano)
         # default value for boad rev is 200
         nano_board_rev="${JETSON_NANO_REVISION:=200}"
-        printf "Create image for Jetson nano 4GB ($nano_board_rev) board"
+        printf "Create image for Jetson nano 4GB board ($nano_board_rev)"
         ./jetson-disk-image-creator.sh -o jetson.img -b jetson-nano -r $nano_board_rev
         printf "OK\n"
         ;;
