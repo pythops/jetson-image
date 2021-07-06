@@ -1,0 +1,48 @@
+# This is a basic workflow to help you get started with Actions
+
+name: CI
+
+# Controls when the workflow will run
+on:
+  # Triggers the workflow on push or pull request events but only for the master branch
+  push:
+    branches: [ master ]
+  pull_request:
+    branches: [ master ]
+
+  # Allows you to run this workflow manually from the Actions tab
+  workflow_dispatch:
+
+# A workflow run is made up of one or more jobs that can run sequentially or in parallel
+jobs:
+  # This workflow contains a single job called "build"
+  build:
+    # The type of runner that the job will run on
+    runs-on: ubuntu-latest
+
+    # Steps represent a sequence of tasks that will be executed as part of the job
+    steps:
+      # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
+      - uses: actions/checkout@v2
+
+      # Runs a single command using the runners shell
+      - name: Build jetson nano A02 image
+        run: |
+          sudo -E ./create-rootfs.sh
+          pip install --user ansible
+          cd ansible
+          sudo -E $(which ansible-playbook) jetson.yaml
+          cd ..
+          sudo -E ./create-image.sh
+        env: 
+          JETSON_ROOTFS_DIR: ${{github.workspace}}/rootfs
+          JETSON_NANO_BOARD: jetson-nano
+          JETSON_NANO_REVISION: 200
+          JETSON_BUILD_DIR: ${{github.workspace}}/build
+      - name: Archive production artifacts
+        uses: actions/upload-artifact@v2
+        with:
+          name: jetson-nano-a02
+          path: |
+            ${{github.workspace}}/build/Linux_for_Tegra/tools/jetson.img
+
