@@ -54,4 +54,10 @@ printf "Run debootstrap second stage... "
 chroot $JETSON_ROOTFS_DIR /bin/bash -c "/debootstrap/debootstrap --second-stage" > /dev/null
 printf "[OK]\n"
 
+# Copy additional files we want injected into rootfs
+printf "Copying additional files into rootfs..."
+SCRIPT_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null 2>&1 && pwd )"
+cp -rf ${SCRIPT_DIR}/files/* $JETSON_ROOTFS_DIR/
+printf "[OK]\n"
+
 printf "Success!\n"

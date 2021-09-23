@@ -5,6 +5,7 @@ on:
   push:
     branches:
       - master
+      - main
       - feature-*
 
   # Run any PRs.
@@ -25,3 +26,8 @@ jobs:
       - name: Create rootfs
         run: |
           sudo -E ./create-rootfs.sh
+
+      - name: Customize rootfs
+        run: |
+          cd ansible
+          sudo -E $(which ansible-playbook) jetson.yaml

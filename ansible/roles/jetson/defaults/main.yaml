@@ -2,6 +2,6 @@
 ubuntu_release: focal
 
 new_user:
-  name: pythops
+  name: nano
   shell: /bin/bash
-  password: pythops
+  password: jetson
