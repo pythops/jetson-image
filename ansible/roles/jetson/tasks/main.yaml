@@ -108,6 +108,8 @@
   systemd:
     name: "{{ item }}"
     enabled: yes
+    masked: no
+    daemon_reload: yes
   loop:
     - ssh
     - systemd-networkd
