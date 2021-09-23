@@ -11,13 +11,13 @@ on:
   # Run any PRs.
   pull_request:
 
-env:
-  JETSON_ROOTFS_DIR: /jetson-rootfs
-
 jobs:
-  build:
+  nano-2gb:
     runs-on: ubuntu-latest
-
+    env:
+      JETSON_ROOTFS_DIR: /jetson-nano-2gb-rootfs
+      JETSON_NANO_BOARD: jetson-nano-2gb
+      JETSON_BUILD_DIR: /jetson-nano-2gb-build
     steps:
       - uses: actions/checkout@v2
         with:
@@ -31,3 +31,7 @@ jobs:
         run: |
           cd ansible
           sudo -E $(which ansible-playbook) jetson.yaml
+
+      - name: Build image
+        run: |
+          sudo -E ./create-image.sh

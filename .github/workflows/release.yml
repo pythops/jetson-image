@@ -1,0 +1,43 @@
+name: Release
+on:
+  release:
+    types: [edited, published]
+    branches:
+      - main
+      - feature-*
+
+jobs:
+  nano-2gb:
+    runs-on: ubuntu-latest
+    env:
+      JETSON_ROOTFS_DIR: /nano-2gb-rootfs
+      JETSON_NANO_BOARD: jetson-nano-2gb
+      JETSON_BUILD_DIR: /nano-2gb-build
+    steps:
+      - uses: actions/checkout@v2
+        with:
+          submodules: recursive
+      
+      - name: Create rootfs
+        run: |
+          sudo -E ./create-rootfs.sh
+
+      - name: Customize rootfs
+        run: |
+          cd ansible
+          sudo -E $(which ansible-playbook) jetson.yaml
+
+      - name: Build image
+        run: |
+          sudo -E ./create-image.sh
+
+      - name: Make tarball
+        run: |
+          tar -czvf "jetson-nano-2gb.tar.gz" "/nano-2gb-build/tools/jetson.img"
+      
+      - name: Publish binaries  
+        uses: skx/github-action-publish-binaries@master
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          args: jetson-nano-2gb.tar.gz
