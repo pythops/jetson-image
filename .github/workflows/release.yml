@@ -33,7 +33,7 @@ jobs:
 
       - name: Make tarball
         run: |
-          tar -czvf "jetson-nano-2gb.tar.gz" "/nano-2gb-build/tools/jetson.img"
+          tar -czvf "jetson-nano-2gb.tar.gz" "/${JETSON_BUILD_DIR}/Linux_for_Tegra/tools/jetson.img"
       
       - name: Publish binaries  
         uses: skx/github-action-publish-binaries@master

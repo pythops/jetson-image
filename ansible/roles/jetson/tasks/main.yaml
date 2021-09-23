@@ -111,6 +111,7 @@
   loop:
     - ssh
     - systemd-networkd
+    - resizerootfs
 
 - name: Update network conf
   template:
