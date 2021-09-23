@@ -1,0 +1,27 @@
+name: CI
+
+on:
+  # Run jobs on push to master or feature branches
+  push:
+    branches:
+      - master
+      - feature-*
+
+  # Run any PRs.
+  pull_request:
+
+env:
+  JETSON_ROOTFS_DIR: /jetson-rootfs
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v2
+        with:
+          submodules: recursive
+      
+      - name: Create rootfs
+        run: |
+          sudo -E ./create-rootfs.sh
