@@ -40,7 +40,7 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
-          args: "${JETSON_BUILD_DIR}/Linux_for_Tegra/tools/jetson-nano-2gb.tar.gz"
+          args: "jetson-nano-2gb.tar.gz"
   
   nano-4gb:
     runs-on: ubuntu-latest
@@ -77,4 +77,4 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
-          args: "${JETSON_BUILD_DIR}/Linux_for_Tegra/tools/jetson-nano.tar.gz"  
+          args: "jetson-nano.tar.gz"  
