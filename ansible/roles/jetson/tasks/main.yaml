@@ -98,6 +98,7 @@
     - usbutils
     - vim
     - wpasupplicant
+    - parted
 
 - name: Generate locales
   locale_gen:
