@@ -141,3 +141,8 @@
   shell: python3 /tmp/get-pip.py --user
   become: yes
   become_user: "{{ new_user.name }}"
+
+- name: Set hostname
+  shell: |
+    echo /etc/hostname > "jetson"
+    echo /etc/hosts >> "127.0.1.1 jetson"
