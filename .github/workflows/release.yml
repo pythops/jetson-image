@@ -33,8 +33,7 @@ jobs:
 
       - name: Make tarball
         run: |
-          cd "${JETSON_BUILD_DIR}/Linux_for_Tegra/tools"
-          tar -czvf "jetson-nano-2gb.tar.gz" "jetson.img"
+          tar -czvf "jetson-nano-2gb.tar.gz" -C "${JETSON_BUILD_DIR}/Linux_for_Tegra/tools" "jetson.img"
       
       - name: Publish binaries  
         uses: skx/github-action-publish-binaries@master
@@ -71,8 +70,7 @@ jobs:
 
       - name: Make tarball
         run: |
-          cd "${JETSON_BUILD_DIR}/Linux_for_Tegra/tools"
-          tar -czvf "jetson-nano.tar.gz" "jetson.img"
+          tar -czvf "jetson-nano.tar.gz" -C "${JETSON_BUILD_DIR}/Linux_for_Tegra/tools" "jetson.img"
       
       - name: Publish binaries  
         uses: skx/github-action-publish-binaries@master
