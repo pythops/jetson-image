@@ -35,3 +35,29 @@ jobs:
       - name: Build image
         run: |
           sudo -E ./create-image.sh
+
+  nano-4gb:
+    runs-on: ubuntu-latest
+    env:
+      JETSON_ROOTFS_DIR: /nano-rootfs
+      JETSON_NANO_BOARD: jetson-nano
+      JETSON_BUILD_DIR: /nano-build
+      # Default is B01, set to 200 for A02
+      JETSON_NANO_REVISION: 300
+    steps:
+      - uses: actions/checkout@v2
+        with:
+          submodules: recursive
+      
+      - name: Create rootfs
+        run: |
+          sudo -E ./create-rootfs.sh
+
+      - name: Customize rootfs
+        run: |
+          cd ansible
+          sudo -E $(which ansible-playbook) jetson.yaml
+
+      - name: Build image
+        run: |
+          sudo -E ./create-image.sh

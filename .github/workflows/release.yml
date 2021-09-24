@@ -42,3 +42,41 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
           args: "${JETSON_BUILD_DIR}/Linux_for_Tegra/tools/jetson-nano-2gb.tar.gz"
+  
+  nano-4gb:
+    runs-on: ubuntu-latest
+    env:
+      JETSON_ROOTFS_DIR: /nano-rootfs
+      JETSON_NANO_BOARD: jetson-nano
+      JETSON_BUILD_DIR: /nano-build
+      # Default is B01, set to 200 for A02
+      JETSON_NANO_REVISION: 300
+    steps:
+      - uses: actions/checkout@v2
+        with:
+          submodules: recursive
+      
+      - name: Create rootfs
+        run: |
+          sudo -E ./create-rootfs.sh
+
+      - name: Customize rootfs
+        run: |
+          cd ansible
+          sudo -E $(which ansible-playbook) jetson.yaml
+
+      - name: Build image
+        run: |
+          sudo -E ./create-image.sh
+
+      - name: Make tarball
+        run: |
+          cd "${JETSON_BUILD_DIR}/Linux_for_Tegra/tools"
+          tar -czvf "jetson-nano.tar.gz" "jetson.img"
+      
+      - name: Publish binaries  
+        uses: skx/github-action-publish-binaries@master
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          args: "${JETSON_BUILD_DIR}/Linux_for_Tegra/tools/jetson-nano.tar.gz"  
