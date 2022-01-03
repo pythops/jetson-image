@@ -22,13 +22,13 @@ if [ ! $JETSON_ROOTFS_DIR ]; then
 fi
 
 # Install prerequisites packages
-printf "\e[32mInstall the dependencies...  "
+printf "\e[32mInstall the dependencies...     "
 apt-get update > /dev/null
-apt-get install --no-install-recommends -y qemu-user-static debootstrap binfmt-support coreutils parted wget gdisk e2fsprogs > /dev/null
+apt-get install --no-install-recommends -y qemu-user-static debootstrap binfmt-support coreutils parted wget gdisk e2fsprogs libxml2-utils  > /dev/null
 printf "[OK]\n"
 
 # Create rootfs directory
-printf "Create rootfs directory...    "
+printf "Create rootfs directory...      "
 mkdir -p $JETSON_ROOTFS_DIR
 printf "[OK]\n"
 
@@ -54,4 +54,4 @@ printf "Run debootstrap second stage... "
 chroot $JETSON_ROOTFS_DIR /bin/bash -c "/debootstrap/debootstrap --second-stage" > /dev/null
 printf "[OK]\n"
 
-printf "Success!\n"
+printf "The rootfs has been created successfully."

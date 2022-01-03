@@ -20,13 +20,13 @@ if [ "$#" -ne 2 ]; then
 fi
 
 # Check that $2 is a block device
-if [ ! -b $2 ] || [ "$(lsblk | grep -w $(basename $2) | awk '{print $6}')" != "disk" ]; then
+if [ ! -b "$2" ] || [ "$(lsblk | grep -w $(basename $2) | awk '{print $6}')" != "disk" ]; then
 	printf "\e[31m$2 is not a block device\e[0m\n"
 	exit 1
 fi
 
 # Check jetson image file
-if [ ! -e $1 ] || [ ! -s $1 ]; then
+if [ ! -e "$1" ] || [ ! -s "$1" ]; then
 	printf "\e[31m$1 does not exist or has 0 B in size\e[0m\n"
 	exit 1
 fi
@@ -65,8 +65,13 @@ printf "[OK]\e[0m\n"
 
 # Extend fs
 printf "\e[32mExtend the fs... "
-e2fsck -fp $2"p1" > /dev/null
-resize2fs $2"p1" > /dev/null
+if [[ $sdcard =~ .*mmcblk.* ]]; then
+    e2fsck -fp $2"p1" > /dev/null
+    resize2fs $2"p1" > /dev/null
+else
+    e2fsck -fp $2"1" > /dev/null
+    resize2fs $2"1" > /dev/null
+fi
 sync
 printf "[OK]\e[0m\n"
 
