@@ -1,1 +1,3 @@
 *.swp
+*.vagrant/
+jetson.img
