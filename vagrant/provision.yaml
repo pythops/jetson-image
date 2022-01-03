@@ -1,0 +1,9 @@
+- hosts: all
+  remote_user: vagrant
+  tasks:
+    - name: Install ansible
+      apt:
+        name: ansible
+        state: latest
+        update_cache: yes
+      become: yes
