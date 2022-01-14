@@ -54,4 +54,4 @@ printf "Run debootstrap second stage... "
 chroot $JETSON_ROOTFS_DIR /bin/bash -c "/debootstrap/debootstrap --second-stage" > /dev/null
 printf "[OK]\n"
 
-printf "The rootfs has been created successfully."
+printf "The rootfs has been created successfully.\n"
