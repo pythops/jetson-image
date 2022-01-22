@@ -65,7 +65,7 @@ printf "[OK]\e[0m\n"
 
 # Extend fs
 printf "\e[32mExtend the fs... "
-if [[ $sdcard =~ .*mmcblk.* ]]; then
+if [[ $2 =~ .*mmcblk.* ]]; then
     e2fsck -fp $2"p1" > /dev/null
     resize2fs $2"p1" > /dev/null
 else
