@@ -1,0 +1,43 @@
+name: CI
+
+on:
+  push:
+    branches: [main, master]
+  pull_request:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - board: jetson-nano
+            revision: 300
+
+    env:
+      JETSON_ROOTFS_DIR: /tmp/jetson-builder/rootfs
+      JETSON_BUILD_DIR: /tmp/jetson-builder/build
+      JETSON_NANO_BOARD: ${{ matrix.board }}
+      JETSON_NANO_REVISION: ${{ matrix.revision }}
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: Create rootfs
+        run: |
+          sudo -E ./create-rootfs.sh
+      - name: Customize rootfs
+        run: |
+          cd ansible
+          sudo -E $(which ansible-playbook) jetson.yaml
+      - name: Build image
+        run: |
+          sudo -E ./create-image.sh
+
+      - name: Upload image
+        uses: actions/upload-artifact@v2
+        with:
+          name: ${{ matrix.board }}-r${{ matrix.revision }}
+          path: |
+            jetson.img
