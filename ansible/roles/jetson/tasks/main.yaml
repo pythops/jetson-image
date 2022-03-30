@@ -72,6 +72,22 @@
     - usbutils
     - neovim
     - wpasupplicant
+    - parted
+
+- name: Copy resizerootfs.service
+  copy:
+    src: files/resizerootfs.service
+    dest: /etc/systemd/system/resizerootfs.service
+    owner: root
+    group: root
+
+- name: Copy resizerootfs
+  copy:
+    src: files/resizerootfs
+    dest: /usr/sbin/resizerootfs
+    owner: root
+    group: root
+    mode: 0755
 
 - name: Generate locales
   locale_gen:
@@ -82,9 +98,11 @@
   systemd:
     name: "{{ item }}"
     enabled: yes
+    masked: no
   loop:
     - ssh
     - systemd-networkd
+    - resizerootfs
 
 - name: Update network conf
   template:
