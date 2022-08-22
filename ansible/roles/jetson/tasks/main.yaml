@@ -42,6 +42,7 @@
     - python-is-python2
     - libgstreamer1.0-0
     - libgstreamer-plugins-bad1.0-0
+    - i2c-tools
 
 - name: Install core packages
   apt:
