@@ -7,7 +7,7 @@
 set -e
 
 ARCH=arm64
-RELEASE=focal
+RELEASE=jammy
 
 # Check if the user is not root
 if [ "x$(whoami)" != "xroot" ]; then
