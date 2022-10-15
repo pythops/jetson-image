@@ -1,4 +1,3 @@
----
 - name: Update /etc/apt/sources.list
   template:
     src: etc/apt/sources.list
@@ -43,6 +42,7 @@
     - libgstreamer1.0-0
     - libgstreamer-plugins-bad1.0-0
     - i2c-tools
+    - bridge-utils
 
 - name: Install core packages
   apt:
