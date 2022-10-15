@@ -6,7 +6,7 @@
 
 set -e
 
-BSP=https://developer.nvidia.com/embedded/l4t/r32_release_v7.1/t210/jetson-210_linux_r32.7.1_aarch64.tbz2
+BSP=https://developer.nvidia.com/embedded/l4t/r32_release_v7.2/t210/jetson-210_linux_r32.7.2_aarch64.tbz2
 
 # Check if the user is not root
 if [ "x$(whoami)" != "xroot" ]; then
@@ -79,8 +79,8 @@ case "$JETSON_NANO_BOARD" in
         ;;
 
     *)
-	printf "\e[31mUnknown Jetson nano board type\e[0m\n"
-	exit 1
+	      printf "\e[31mUnknown Jetson nano board type\e[0m\n"
+	      exit 1
         ;;
 esac
 
