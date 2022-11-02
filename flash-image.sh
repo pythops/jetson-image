@@ -57,7 +57,7 @@ start_sector=$(sgdisk -i 1 $2 | grep "First sector" | awk '{print $3}')
 # Recrate the partition
 sgdisk -d 1 $2 > /dev/null
 
-sgdisk -n 1:$start:$end $2 > /dev/null
+sgdisk -n 1:$start_sector:$end_sector $2 > /dev/null
 
 sgdisk -c 1:APP $2 > /dev/null
 
