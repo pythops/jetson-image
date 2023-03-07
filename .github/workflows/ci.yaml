@@ -11,8 +11,10 @@ jobs:
       - uses: actions/checkout@v2
       - uses: taiki-e/install-action@just
 
-      - name: Install podman
-        run: sudo apt install -y podman
+      - name: Install dependencies
+        run: |
+          sudo apt install -y podman qemu-user-static
+          sudo systectmctl start systemd-binfmt.service
 
       - name: Create rootfs
         run: just build-jetson-rootfs
