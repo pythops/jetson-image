@@ -1,0 +1,18 @@
+---
+on:
+  push:
+    branches:
+      - "*"
+name: Test
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - uses: taiki-e/install-action@just
+
+      - name: Install podman
+        run: sudo apt install -y podman
+
+      - name: Create rootfs
+        run: just build-jetson-rootfs
