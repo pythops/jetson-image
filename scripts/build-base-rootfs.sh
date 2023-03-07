@@ -7,7 +7,6 @@ set -e
 echo "Building base rootfs"
 
 podman build \
-	--layers \
 	--squash-all \
 	--jobs=4 \
 	--arch=arm64 \
