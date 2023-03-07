@@ -6,7 +6,6 @@ set -e
 
 podman build \
 	--cap-add=all \
-	--cache-ttl=1h \
 	--jobs=4 \
 	-f Containerfile.image \
 	-t jetson-build-image
