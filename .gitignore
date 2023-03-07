@@ -1,4 +1,4 @@
 *.swp
 *.vagrant/
 jetson.img
-roots/
+rootfs/
