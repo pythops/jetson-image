@@ -7,8 +7,8 @@ RUN apt update && \
     apt install -y systemd
 
 # Update apt mirrors
-COPY config/sources.list /etc/apt/sources.list
-RUN apt update
+RUN echo "deb http://ports.ubuntu.com/ubuntu-ports/ bionic main" >> /etc/apt/sources.list && \
+    apt update
 
 # Nvidia required packages
 RUN apt install -y \
