@@ -22,16 +22,16 @@ jobs:
       - name: Build jetson image for Jetson nano revision 300
         run: |
           just build-jetson-image  \
-            board=jetson-nano \
-            revision=300
+            jetson-nano \
+            300
 
       - name: Build jetson image for Jetson nano revision 200
         run: |
           just build-jetson-image \
-            board=jetson-nano \
-            revision=200
+            jetson-nano \
+            200
 
       - name: Build jetson image for Jetson nano 2G
         run: |
           just build-jetson-image \
-            board=jetson-nano-2gb
+            jetson-nano-2gb
