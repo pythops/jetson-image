@@ -24,14 +24,23 @@ jobs:
           just build-jetson-image  \
             jetson-nano \
             300
+          mv jetson.img jetson-nano-300-32.7.3.img
+          lrzip jetson-nano-300-32.7.3.img
+          ls -lht jetson-nano-300-32.7.3.img.lrz
 
       - name: Build jetson image for Jetson nano revision 200
         run: |
           just build-jetson-image \
             jetson-nano \
             200
+          mv jetson.img jetson-nano-200-32.7.3.img
+          lrzip jetson-nano-200-32.7.3.img
+          ls -lht jetson-nano-200-32.7.3.img.lrz
 
       - name: Build jetson image for Jetson nano 2G
         run: |
           just build-jetson-image \
             jetson-nano-2gb
+          mv jetson.img jetson-nano-2gb-32.7.3.img
+          lrzip jetson-nano-2gb-32.7.3.img
+          ls -lht jetson-nano-2gb-32.7.3.img.lrz
