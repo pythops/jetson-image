@@ -14,7 +14,7 @@ jetson-nano)
 	nano_board_revision=${JETSON_NANO_REVISION:=300}
 	printf "Creating image for Jetson nano board (%s revision)... " $nano_board_revision
 	sudo ./jetson-disk-image-creator.sh -o jetson.img -b jetson-nano -r $nano_board_revision
-	cp jetson.img /jetson
+	cp jetson.img /jetson/
 	printf "[OK]\n"
 	;;
 
