@@ -27,3 +27,6 @@ build-jetson-image board revision="300":
         echo "Building for jetson-nano-2gb board"
         scripts/build-jetson-image.sh {{ board }}
     fi
+
+flash-jetson-image Jetson-image device:
+    @scripts/flash-jetson-image.sh {{ Jetson-image }} {{ device }}
