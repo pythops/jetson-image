@@ -15,7 +15,8 @@ RUN apt update && \
         sudo \
         libxml2-utils \
         python3 \
-        gdisk
+        gdisk \
+        kpartx
 
 # Extract the BSP
 RUN mkdir /build && \
@@ -26,7 +27,9 @@ COPY rootfs/ /build/Linux_for_Tegra/rootfs/
 
 # Different patches
 COPY patches /patches
-RUN patch /build/Linux_for_Tegra/nv_tegra/nv-apply-debs.sh < /patches/nv-apply-debs.diff
+RUN patch /build/Linux_for_Tegra/nv_tegra/nv-apply-debs.sh < /patches/nv-apply-debs.diff && \
+    patch /build/Linux_for_Tegra/tools/jetson-disk-image-creator.sh < /patches/jetson-disk-image-creator.diff
+
 
 # Install nvidia packages in the new rootfs
 RUN cd /build/Linux_for_Tegra && \
