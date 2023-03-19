@@ -4,6 +4,25 @@
 
 set -e
 
+if [ "$1" != "jetson-nano" ] && [ "$1" != "jetson-nano-2gb" ]; then
+	echo "Unsupported board {{ board }}"
+	echo "The only supported boards are:"
+	echo "- jetson-nano"
+	echo "- jetson-nano-2gb"
+	exit
+fi
+
+if [ "$1" == "jetson-nano" ]; then
+	if [ "$2" != "300" ] && [ "$2" != "200" ]; then
+		echo "Unknown revision for Jetson nano board"
+		echo "Supported revision: 200 or 300"
+		exit
+	fi
+	echo "Building for Jetson nano board revision $2"
+else
+	echo "Building for jetson-nano-2gb board"
+fi
+
 podman build \
 	--cap-add=all \
 	--jobs=4 \
