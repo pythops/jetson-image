@@ -13,8 +13,25 @@ jobs:
 
       - name: Install dependencies
         run: |
-          sudo apt install -y podman qemu-user-static
+          sudo apt install -y podman qemu-user-static lrzip
           sudo systemctl start systemd-binfmt.service
 
       - name: Create rootfs
         run: just build-jetson-rootfs
+
+      - name: Build jetson image for Jetson nano revision 300
+        run: |
+          just build-jetson-image  \
+            board=jetson-nano \
+            revision=300
+
+      - name: Build jetson image for Jetson nano revision 200
+        run: |
+          just build-jetson-image \
+            board=jetson-nano \
+            revision=200
+
+      - name: Build jetson image for Jetson nano 2G
+        run: |
+          just build-jetson-image \
+            board=jetson-nano-2gb
