@@ -76,4 +76,9 @@ COPY config/netcfg.yaml /etc/netplan/netcfg.yaml
 # New user
 # username: jetson
 # password: jetson
-RUN useradd --create-home -p $(openssl passwd -6 jetson) jetson
+RUN useradd \
+        --create-home \
+        -G sudo \
+        -p $(openssl passwd -6 jetson) \
+        -s /bin/bash \
+        jetson
