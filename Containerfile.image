@@ -25,6 +25,9 @@ RUN mkdir /build && \
 # Copy the ubuntu rootfs
 COPY rootfs/ /build/Linux_for_Tegra/rootfs/
 
+# Sudo permissions
+RUN chmod 4755 /build/Linux_for_Tegra/rootfs/usr/bin/sudo
+
 # Different patches
 COPY patches /patches
 RUN patch /build/Linux_for_Tegra/nv_tegra/nv-apply-debs.sh < /patches/nv-apply-debs.diff && \
