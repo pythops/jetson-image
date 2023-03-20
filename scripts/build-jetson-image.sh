@@ -23,7 +23,7 @@ else
 	echo "Building for jetson-nano-2gb board"
 fi
 
-sudo podman build \
+sudo -E podman build \
 	--cap-add=all \
 	--jobs=4 \
 	-f Containerfile.image \
