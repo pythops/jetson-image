@@ -28,6 +28,7 @@ jobs:
             300
           mv jetson.img jetson-nano-300-32.7.3.img
           lrzip jetson-nano-300-32.7.3.img
+          rm -rf jetson-nano-300-32.7.3.img
           ls -lht jetson-nano-300-32.7.3.img.lrz
 
       - name: Build jetson image for Jetson nano revision 200
@@ -37,6 +38,7 @@ jobs:
             200
           mv jetson.img jetson-nano-200-32.7.3.img
           lrzip jetson-nano-200-32.7.3.img
+          rm -rf jetson-nano-200-32.7.3.img
           ls -lht jetson-nano-200-32.7.3.img.lrz
 
       - name: Build jetson image for Jetson nano 2G
@@ -45,6 +47,7 @@ jobs:
             jetson-nano-2gb
           mv jetson.img jetson-nano-2gb-32.7.3.img
           lrzip jetson-nano-2gb-32.7.3.img
+          rm -rf jetson-nano-2gb-32.7.3.img
           ls -lht jetson-nano-2gb-32.7.3.img.lrz
 
       - name: Release
