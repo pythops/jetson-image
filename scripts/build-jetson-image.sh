@@ -23,11 +23,14 @@ else
 	echo "Building for jetson-nano-2gb board"
 fi
 
-sudo -E podman build \
+podman build \
 	--cap-add=all \
 	--jobs=4 \
 	-f Containerfile.image \
 	-t jetson-build-image
+
+podman save -o build.tar localhost/jetson-build-image
+sudo podman load -i build.tar
 
 if [ "$1" == "jetson-nano" ]; then
 	sudo podman run \
@@ -47,3 +50,5 @@ else
 		localhost/jetson-build-image:latest \
 		create-jetson-image.sh
 fi
+
+sudo rm -rf build.tar
