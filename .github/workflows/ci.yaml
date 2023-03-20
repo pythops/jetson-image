@@ -1,11 +1,13 @@
 ---
 on:
   push:
-    branches:
+    tags:
       - "*"
-name: Test
+name: Build
 jobs:
-  test:
+  build:
+    permissions:
+      contents: write
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
@@ -44,3 +46,13 @@ jobs:
           mv jetson.img jetson-nano-2gb-32.7.3.img
           lrzip jetson-nano-2gb-32.7.3.img
           ls -lht jetson-nano-2gb-32.7.3.img.lrz
+
+      - name: Release
+        uses: softprops/action-gh-release@v1
+        with:
+          body: |
+            ubuntu 20.04
+            BSP 32.7.3
+          files: "jetson*"
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
