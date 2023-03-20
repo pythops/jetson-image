@@ -1,7 +1,6 @@
 <div align="center">
 
 [![Status](https://img.shields.io/badge/status-active-success.svg)]()
-[![License](https://img.shields.io/badge/license-MIT-blue)]()
 
 </div>
 
@@ -29,4 +28,5 @@ If you need more advanced configuration or a custom setup, you can contact me on
 Copyright Badr BADRI @pythops
 
 2019-2022 MIT
+
 2023-Present AGPLv3
