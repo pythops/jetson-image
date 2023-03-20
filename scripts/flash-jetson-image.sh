@@ -35,7 +35,7 @@ fi
 if [ "$(mount | grep $2)" ]; then
 	printf "\e[32mUnmount SD card... "
 	for mount_point in $(mount | grep $2 | awk '{ print $1}'); do
-		sudo umount $mount_point > /dev/null
+		sudo umount $mount_point >/dev/null
 	done
 	printf "[OK]\e[0m\n"
 fi
@@ -47,30 +47,30 @@ printf "\e[32m[OK]\e[0m\n"
 
 # Extend the partition
 printf "\e[32mExtend the partition... "
-partprobe $2 &> /dev/null
+partprobe $2 &>/dev/null
 
-sgdisk -e $2 > /dev/null
+sgdisk -e $2 >/dev/null
 
-end_sector=$(sgdisk -p $2 |  grep -i "Total free space is" | awk '{ print $5 }')
+end_sector=$(sgdisk -p $2 | grep -i "Total free space is" | awk '{ print $5 }')
 start_sector=$(sgdisk -i 1 $2 | grep "First sector" | awk '{print $3}')
 
 # Recrate the partition
-sgdisk -d 1 $2 > /dev/null
+sgdisk -d 1 $2 >/dev/null
 
-sgdisk -n 1:$start_sector:$end_sector $2 > /dev/null
+sgdisk -n 1:$start_sector:$end_sector $2 >/dev/null
 
-sgdisk -c 1:APP $2 > /dev/null
+sgdisk -c 1:APP $2 >/dev/null
 
 printf "[OK]\e[0m\n"
 
 # Extend fs
 printf "\e[32mExtend the fs... "
 if [[ $2 =~ .*mmcblk.* ]]; then
-    e2fsck -fp $2"p1" > /dev/null
-    resize2fs $2"p1" > /dev/null
+	e2fsck -fp $2"p1" >/dev/null
+	resize2fs $2"p1" >/dev/null
 else
-    e2fsck -fp $2"1" > /dev/null
-    resize2fs $2"1" > /dev/null
+	e2fsck -fp $2"1" >/dev/null
+	resize2fs $2"1" >/dev/null
 fi
 sync
 printf "[OK]\e[0m\n"

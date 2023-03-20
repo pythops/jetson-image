@@ -1,0 +1,58 @@
+---
+on:
+  push:
+    tags:
+      - "*"
+name: Build
+jobs:
+  build:
+    permissions:
+      contents: write
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - uses: taiki-e/install-action@just
+
+      - name: Install dependencies
+        run: |
+          sudo apt install -y podman qemu-user-static lrzip
+          sudo systemctl start systemd-binfmt.service
+
+      - name: Create rootfs
+        run: just build-jetson-rootfs
+
+      - name: Build jetson image for Jetson nano revision 300
+        run: |
+          just build-jetson-image  \
+            jetson-nano \
+            300
+          mv jetson.img jetson-nano-300-32.7.3.img
+          lrzip jetson-nano-300-32.7.3.img
+          ls -lht jetson-nano-300-32.7.3.img.lrz
+
+      - name: Build jetson image for Jetson nano revision 200
+        run: |
+          just build-jetson-image \
+            jetson-nano \
+            200
+          mv jetson.img jetson-nano-200-32.7.3.img
+          lrzip jetson-nano-200-32.7.3.img
+          ls -lht jetson-nano-200-32.7.3.img.lrz
+
+      - name: Build jetson image for Jetson nano 2G
+        run: |
+          just build-jetson-image \
+            jetson-nano-2gb
+          mv jetson.img jetson-nano-2gb-32.7.3.img
+          lrzip jetson-nano-2gb-32.7.3.img
+          ls -lht jetson-nano-2gb-32.7.3.img.lrz
+
+      - name: Release
+        uses: softprops/action-gh-release@v1
+        with:
+          body: |
+            ubuntu 20.04
+            BSP 32.7.3
+          files: "jetson*"
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

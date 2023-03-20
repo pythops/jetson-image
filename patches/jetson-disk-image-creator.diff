@@ -1,0 +1,13 @@
+230c230,232
+< 	loop_dev="$(losetup --show -f -P "${sd_blob_name}")"
+---
+> 	loop_dev="$(losetup --show -f "${sd_blob_name}")"
+> 	kpartx -av "${loop_dev}"
+> 
+250c252,253
+< 			sudo dd if="${target_file}" of="${loop_dev}p${part_num}"
+---
+> 			target_part="/dev/mapper/$(basename $loop_dev)p$part_num"
+> 			sudo dd if="${target_file}" of="${target_part}" conv=sync
+253a257
+> 	kpartx -vd "${loop_dev}"

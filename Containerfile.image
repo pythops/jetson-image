@@ -1,0 +1,44 @@
+FROM ubuntu
+
+LABEL org.opencontainers.image.authors="Badr @pythops"
+
+# Define the BSP version
+ARG BSP=https://developer.nvidia.com/downloads/remetpack-463r32releasev73t210jetson-210linur3273aarch64tbz2
+
+# Install different dependencies
+RUN apt update && \
+    apt install -y \
+        wget \
+        patch \
+        bzip2 \
+        qemu-user-static \
+        sudo \
+        libxml2-utils \
+        python3 \
+        gdisk \
+        kpartx
+
+# Extract the BSP
+RUN mkdir /build && \
+    wget -qO- $BSP | tar -jxpf - -C /build
+
+# Copy the ubuntu rootfs
+COPY rootfs/ /build/Linux_for_Tegra/rootfs/
+
+# Sudo permissions
+RUN chmod 4755 /build/Linux_for_Tegra/rootfs/usr/bin/sudo
+
+# Different patches
+COPY patches /patches
+RUN patch /build/Linux_for_Tegra/nv_tegra/nv-apply-debs.sh < /patches/nv-apply-debs.diff && \
+    patch /build/Linux_for_Tegra/tools/jetson-disk-image-creator.sh < /patches/jetson-disk-image-creator.diff
+
+
+# Install nvidia packages in the new rootfs
+RUN cd /build/Linux_for_Tegra && \
+    ./apply_binaries.sh
+
+# Copy the script to create the image
+COPY scripts/create-jetson-image.sh /usr/local/bin/
+
+WORKDIR /build/Linux_for_Tegra/tools
