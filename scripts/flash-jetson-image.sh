@@ -42,38 +42,5 @@ fi
 
 # Flash image
 printf "\e[32mFlash the sdcard... \e[0m"
-dd if=$1 of=$2 bs=4M conv=fsync status=progress
-printf "\e[32m[OK]\e[0m\n"
-
-# Extend the partition
-printf "\e[32mExtend the partition... "
-partprobe $2 &>/dev/null
-
-sgdisk -e $2 >/dev/null
-
-end_sector=$(sgdisk -p $2 | grep -i "Total free space is" | awk '{ print $5 }')
-start_sector=$(sgdisk -i 1 $2 | grep "First sector" | awk '{print $3}')
-
-# Recrate the partition
-sgdisk -d 1 $2 >/dev/null
-
-sgdisk -n 1:$start_sector:$end_sector $2 >/dev/null
-
-sgdisk -c 1:APP $2 >/dev/null
-
-printf "[OK]\e[0m\n"
-
-# Extend fs
-printf "\e[32mExtend the fs... "
-if [[ $2 =~ .*mmcblk.* ]]; then
-	e2fsck -fp $2"p1" >/dev/null
-	resize2fs $2"p1" >/dev/null
-else
-	e2fsck -fp $2"1" >/dev/null
-	resize2fs $2"1" >/dev/null
-fi
-sync
-printf "[OK]\e[0m\n"
-
-printf "\e[32mSuccess!\n"
+dd if=$1 of=$2 bs=128M conv=fsync status=progress
 printf "\e[32mYour sdcard is ready!\n"
