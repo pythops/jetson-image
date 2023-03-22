@@ -28,6 +28,9 @@ COPY rootfs/ /build/Linux_for_Tegra/rootfs/
 # Sudo permissions
 RUN chmod 4755 /build/Linux_for_Tegra/rootfs/usr/bin/sudo
 
+# hardcode the nameserver
+RUN echo "nameserver 8.8.8.8" > /build/Linux_for_Tegra/rootfs/etc/resolv.conf
+
 # Different patches
 COPY patches /patches
 RUN patch /build/Linux_for_Tegra/nv_tegra/nv-apply-debs.sh < /patches/nv-apply-debs.diff && \
