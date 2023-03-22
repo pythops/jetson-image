@@ -1,0 +1,11 @@
+[Unit]
+Description=Resize the rootfs
+Before=local-fs-pre.target
+
+[Service]
+Type=oneshot
+ExecStart=/usr/local/bin/resizerootfs.sh
+RemainAfterExit=yes
+
+[Install]
+RequiredBy=local-fs-pre.target
