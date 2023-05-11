@@ -1,5 +1,6 @@
 ---
 on:
+  workflow_dispatch:
   push:
     tags:
       - "*"
@@ -21,40 +22,40 @@ jobs:
       - name: Create rootfs
         run: just build-jetson-rootfs
 
-      - name: Build jetson image for Jetson nano revision 300
+      - name: Build jetson image for Jetson Nano revision 300
         run: |
           just build-jetson-image  \
             jetson-nano \
             300
           mv jetson.img jetson-nano-300-32.7.3.img
           lrzip jetson-nano-300-32.7.3.img
-          rm -rf jetson-nano-300-32.7.3.img
-          ls -lht jetson-nano-300-32.7.3.img.lrz
+          bzip2 -z jetson-nano-300-32.7.3.img
+          ls -lht jetson-nano-300-32.7.3.img.*
 
-      - name: Build jetson image for Jetson nano revision 200
+      - name: Build jetson image for Jetson Nano revision 200
         run: |
           just build-jetson-image \
             jetson-nano \
             200
           mv jetson.img jetson-nano-200-32.7.3.img
           lrzip jetson-nano-200-32.7.3.img
-          rm -rf jetson-nano-200-32.7.3.img
-          ls -lht jetson-nano-200-32.7.3.img.lrz
+          bzip2 -z jetson-nano-200-32.7.3.img
+          ls -lht jetson-nano-200-32.7.3.img.*
 
-      - name: Build jetson image for Jetson nano 2G
+      - name: Build jetson image for Jetson Nano 2GB
         run: |
           just build-jetson-image \
             jetson-nano-2gb
           mv jetson.img jetson-nano-2gb-32.7.3.img
           lrzip jetson-nano-2gb-32.7.3.img
-          rm -rf jetson-nano-2gb-32.7.3.img
-          ls -lht jetson-nano-2gb-32.7.3.img.lrz
+          bzip2 -z jetson-nano-2gb-32.7.3.img
+          ls -lht jetson-nano-2gb-32.7.3.img.*
 
       - name: Release
         uses: softprops/action-gh-release@v1
         with:
           body: |
-            ubuntu 20.04
+            Ubuntu 20.04
             BSP 32.7.3
           files: "jetson*"
         env:
