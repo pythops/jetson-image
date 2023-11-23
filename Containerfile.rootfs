@@ -3,8 +3,7 @@ FROM ubuntu:focal
 LABEL org.opencontainers.image.authors="Badr @pythops"
 
 # Install systemd
-RUN apt update && \
-    apt install -y systemd
+RUN apt update && apt install -y systemd
 
 # Update apt mirrors
 RUN echo "deb http://ports.ubuntu.com/ubuntu-ports/ bionic main" >> /etc/apt/sources.list && \
