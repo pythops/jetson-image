@@ -3,7 +3,7 @@
 set -e
 
 rootpart="/dev/$(lsblk -l -o NAME,MOUNTPOINT | grep '/' | awk '{print $1}')"
-rootdevice="/dev/$(lsblk -no pkname $rootpart)"
+rootdevice="/dev/$(lsblk -no pkname "$rootpart")"
 
 partprobe "$rootdevice"
 
