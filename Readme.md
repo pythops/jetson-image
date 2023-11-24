@@ -4,14 +4,6 @@
 
 </div>
 
-# Feedback
-
-I'm planning to actively work on this project again from September.
-
-What would you like to have as tools and setup for the minimalist image ?
-
-Let me know by opening an issue.
-
 ## Instructions here:
 
 https://pythops.com/post/create-your-own-image-for-jetson-nano-board.html
@@ -20,7 +12,7 @@ https://pythops.com/post/create-your-own-image-for-jetson-nano-board.html
 
 **Ubuntu release**: 20.04
 
-**BSP**: 32.7.3
+**BSP**: 32.7.4
 
 ## Supported boards:
 
