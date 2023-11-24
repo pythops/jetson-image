@@ -9,6 +9,8 @@ partprobe "$rootdevice"
 
 echo ", +" | sfdisk -f -N 1 "$rootdevice"
 
+partprobe "$rootdevice"
+
 resize2fs "$rootpart"
 
 partprobe "$rootdevice"
