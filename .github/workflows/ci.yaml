@@ -26,31 +26,31 @@ jobs:
 
       - name: Build jetson image for Jetson nano revision 300
         run: |
-          just build-jetson-image  \
+          sudo -E just build-jetson-image  \
             jetson-nano \
             300
-          mv jetson.img "jetson-nano-300_$UBUNTU_$BSP.img"
-          lrzip "jetson-nano-300_$UBUNTU_$BSP.img"
-          rm -rf "jetson-nano-300_$UBUNTU_$BSP.img"
+          sudo mv jetson.img "jetson-nano-300_$UBUNTU_$BSP.img"
+          sudo lrzip "jetson-nano-300_$UBUNTU_$BSP.img"
+          sudo rm -rf "jetson-nano-300_$UBUNTU_$BSP.img"
           ls -lht "jetson-nano-300_$UBUNTU_$BSP.img.lrz"
 
       - name: Build jetson image for Jetson nano revision 200
         run: |
-          just build-jetson-image \
+          sudo -E just build-jetson-image \
             jetson-nano \
             200
-          mv jetson.img "jetson-nano-200_$UBUNTU_$BSP.img"
-          lrzip "jetson-nano-200_$UBUNTU_$BSP.img"
-          rm -rf "jetson-nano-200_$UBUNTU_$BSP.img"
+          sudo mv jetson.img "jetson-nano-200_$UBUNTU_$BSP.img"
+          sudo lrzip "jetson-nano-200_$UBUNTU_$BSP.img"
+          sudo rm -rf "jetson-nano-200_$UBUNTU_$BSP.img"
           ls -lht "jetson-nano-200_$UBUNTU_$BSP.img.lrz"
 
       - name: Build jetson image for Jetson nano 2G
         run: |
-          just build-jetson-image \
+          sudo -E just build-jetson-image \
             jetson-nano-2gb
-          mv jetson.img "jetson-nano-2gb_$UBUNTU_$BSP.img"
-          lrzip "jetson-nano-2gb_$UBUNTU_$BSP.img"
-          rm -rf "jetson-nano-2gb_$UBUNTU_$BSP.img"
+          sudo mv jetson.img "jetson-nano-2gb_$UBUNTU_$BSP.img"
+          sudo lrzip "jetson-nano-2gb_$UBUNTU_$BSP.img"
+          sudo rm -rf "jetson-nano-2gb_$UBUNTU_$BSP.img"
           ls -lht "jetson-nano-2gb_$UBUNTU_$BSP.img.lrz"
 
       - name: Release
