@@ -13,11 +13,16 @@ jobs:
       contents: write
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
-      - uses: taiki-e/install-action@just
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Install just
+        run: |
+          wget -qO- https://github.com/casey/just/releases/download/1.16.0/just-1.16.0-x86_64-unknown-linux-musl.tar.gz | tar -C /usr/local/bin/ -xzvf - just
 
       - name: Install dependencies
         run: |
+          sudo apt update
           sudo apt install -y podman qemu-user-static lrzip
           sudo systemctl start systemd-binfmt.service
 
@@ -26,7 +31,7 @@ jobs:
 
       - name: Build jetson image for Jetson nano revision 300
         run: |
-          sudo -E just build-jetson-image  \
+          sudo just build-jetson-image  \
             jetson-nano \
             300
           sudo mv jetson.img "jetson-nano-300_$UBUNTU_$BSP.img"
@@ -36,7 +41,7 @@ jobs:
 
       - name: Build jetson image for Jetson nano revision 200
         run: |
-          sudo -E just build-jetson-image \
+          sudo just build-jetson-image \
             jetson-nano \
             200
           sudo mv jetson.img "jetson-nano-200_$UBUNTU_$BSP.img"
@@ -46,7 +51,7 @@ jobs:
 
       - name: Build jetson image for Jetson nano 2G
         run: |
-          sudo -E just build-jetson-image \
+          sudo just build-jetson-image \
             jetson-nano-2gb
           sudo mv jetson.img "jetson-nano-2gb_$UBUNTU_$BSP.img"
           sudo lrzip "jetson-nano-2gb_$UBUNTU_$BSP.img"
