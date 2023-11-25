@@ -23,7 +23,7 @@ else
 	echo "Building for jetson-nano-2gb board"
 fi
 
-sudo podman build \
+sudo -E XDG_RUNTIME_DIR= podman build \
 	--cap-add=all \
 	--jobs=4 \
 	-f Containerfile.image \
