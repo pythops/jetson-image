@@ -25,8 +25,4 @@ If you need more advanced configuration or a custom setup, you can contact me on
 
 ## License
 
-Copyright Badr BADRI @pythops
-
-2019-2022 MIT
-
-2023-Present AGPLv3
+AGPLv3
