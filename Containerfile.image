@@ -38,6 +38,9 @@ RUN patch /build/Linux_for_Tegra/nv_tegra/nv-apply-debs.sh < /patches/nv-apply-d
 WORKDIR /build/Linux_for_Tegra/
 RUN ./apply_binaries.sh
 
+# Fix permissions
+RUN chroot /build/Linux_for_Tegra/rootfs/ /bin/bash -c "chown -R jetson:jetson /home/jetson && chmod 1777 /tmp"
+
 # Edit initrd
 WORKDIR /tmp/pythops
 #RUN gzip -d -c /build/Linux_for_Tegra/rootfs/boot/initrd > initrd
