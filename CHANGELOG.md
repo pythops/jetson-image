@@ -1,3 +1,18 @@
+## XXX
+
+### Summary
+
+- ubuntu: 22.04
+- BSP: 32.7.4
+
+### Updates
+
+- Update to ubuntu 22.04
+
+### Changes
+
+- remove `python-jetson-gpio` debian package. Refer to https://github.com/NVIDIA/jetson-gpio to use gpio
+
 ## 2023-11-26
 
 ### Summary
