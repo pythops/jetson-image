@@ -6,7 +6,7 @@ on:
 name: Build
 env:
   BSP: 32.7.4
-  UBUNTU: 20.04
+  UBUNTU: 22.04
 jobs:
   build:
     permissions:
@@ -33,29 +33,29 @@ jobs:
           just build-jetson-image  \
             jetson-nano \
             300
-          mv jetson.img "jetson-nano-300_$UBUNTU_$BSP.img"
-          lrzip "jetson-nano-300_$UBUNTU_$BSP.img"
-          rm -rf "jetson-nano-300_$UBUNTU_$BSP.img"
-          ls -lht "jetson-nano-300_$UBUNTU_$BSP.img.lrz"
+          mv jetson.img "jetson-nano-300_${UBUNTU}_${BSP}.img"
+          lrzip "jetson-nano-300_${UBUNTU}_${BSP}.img"
+          rm -rf "jetson-nano-300_${UBUNTU}_${BSP}.img"
+          ls -lht "jetson-nano-300_${UBUNTU}_${BSP}.img.lrz"
 
       - name: Build jetson image for Jetson nano revision 200
         run: |
           just build-jetson-image \
             jetson-nano \
             200
-          mv jetson.img "jetson-nano-200_$UBUNTU_$BSP.img"
-          lrzip "jetson-nano-200_$UBUNTU_$BSP.img"
-          rm -rf "jetson-nano-200_$UBUNTU_$BSP.img"
-          ls -lht "jetson-nano-200_$UBUNTU_$BSP.img.lrz"
+          mv jetson.img "jetson-nano-200_${UBUNTU}_${BSP}.img"
+          lrzip "jetson-nano-200_${UBUNTU}_${BSP}.img"
+          rm -rf "jetson-nano-200_${UBUNTU}_${BSP}.img"
+          ls -lht "jetson-nano-200_${UBUNTU}_${BSP}.img.lrz"
 
       - name: Build jetson image for Jetson nano 2G
         run: |
           just build-jetson-image \
             jetson-nano-2gb
-          mv jetson.img "jetson-nano-2gb_$UBUNTU_$BSP.img"
-          lrzip "jetson-nano-2gb_$UBUNTU_$BSP.img"
-          rm -rf "jetson-nano-2gb_$UBUNTU_$BSP.img"
-          ls -lht "jetson-nano-2gb_$UBUNTU_$BSP.img.lrz"
+          mv jetson.img "jetson-nano-2gb_${UBUNTU}_${BSP}.img"
+          lrzip "jetson-nano-2gb_${UBUNTU}_${BSP}.img"
+          rm -rf "jetson-nano-2gb_${UBUNTU}_${BSP}.img"
+          ls -lht "jetson-nano-2gb_${UBUNTU}_${BSP}.img.lrz"
 
       - name: Release
         uses: softprops/action-gh-release@v1
