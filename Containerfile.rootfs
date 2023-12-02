@@ -67,7 +67,8 @@ RUN apt install -y \
         wpasupplicant \
         parted \
         gdisk \
-        e2fsprogs
+        e2fsprogs \
+        mtd-utils
 
 # Resize the rootfs
 COPY scripts/resizerootfs.sh /usr/local/bin
