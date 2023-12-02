@@ -123,7 +123,6 @@ elif [ "$board" == "jetson-nano-2gb" ]; then
 else
     sudo podman run \
         --rm \
-        --cap-add=all \
         --privileged \
         -v .:/jetson \
         -e JETSON_BOARD="$board" \
