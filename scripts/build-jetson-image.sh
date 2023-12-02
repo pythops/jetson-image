@@ -23,7 +23,7 @@ function usage() {
     exit 1
 }
 
-while getopts b:r:d: opts; do
+while getopts b:r:d:h opts; do
     case "${opts}" in
 
     b)
@@ -44,6 +44,10 @@ while getopts b:r:d: opts; do
 
     d)
         device=${OPTARG}
+        ;;
+
+    h)
+        usage
         ;;
 
     *) usage ;;
