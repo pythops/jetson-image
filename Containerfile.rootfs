@@ -39,6 +39,7 @@ RUN apt install -y \
 RUN apt install -y \
         bash-completion \
         build-essential \
+        pkg-config \
         btrfs-progs \
         cmake \
         curl \
@@ -64,7 +65,8 @@ RUN apt install -y \
         parted \
         gdisk \
         fdisk \
-        e2fsprogs
+        e2fsprogs \
+        mtd-utils
 
 # Resize the rootfs
 COPY scripts/resizerootfs.sh /usr/local/bin
