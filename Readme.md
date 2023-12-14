@@ -88,7 +88,7 @@ The Jetson image will be built and saved in the current directory in a file name
 To flash the jetson image, just run the following command:
 
 ```
-$ sudo just flash-image <jetson image file> <device>
+$ sudo just flash-jetson-image <jetson image file> <device>
 ```
 
 Where `device` is the name of the sdcard/usb identified by your system.
