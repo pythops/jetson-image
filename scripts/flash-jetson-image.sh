@@ -43,4 +43,4 @@ fi
 # Flash image
 printf "\e[32mFlash the sdcard... \e[0m"
 dd if="$1" of="$2" bs=128M conv=fsync status=progress
-printf "\e[32mYour sdcard is ready!\n"
+printf "\e[32mDevice ready!\n"
