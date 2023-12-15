@@ -3,8 +3,8 @@ set positional-arguments
 default:
     @just --list --unsorted
 
-build-jetson-rootfs:
-    @scripts/build-base-rootfs.sh
+build-jetson-rootfs *args="":
+    -@scripts/build-base-rootfs.sh {{ args }}
 
 build-jetson-image *args="" :
     -@scripts/build-jetson-image.sh {{ args }}

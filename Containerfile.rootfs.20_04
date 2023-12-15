@@ -1,0 +1,92 @@
+FROM ubuntu:focal
+
+LABEL org.opencontainers.image.authors="Badr @pythops"
+
+# Install systemd
+RUN apt update && apt install -y systemd
+
+# Update apt mirrors
+RUN echo "deb http://ports.ubuntu.com/ubuntu-ports/ bionic main" >> /etc/apt/sources.list && \
+    apt update
+
+# Nvidia required packages
+RUN apt install -y \
+        libgles2 \
+        libpangoft2-1.0-0 \
+        libxkbcommon0 \
+        libwayland-egl1 \
+        libwayland-cursor0 \
+        libunwind8 \
+        libasound2 \
+        libpixman-1-0 \
+        libjpeg-turbo8 \
+        libinput10 \
+        libcairo2 \
+        device-tree-compiler \
+        iso-codes \
+        libffi6 \
+        libncursesw5 \
+        libdrm-common \
+        libdrm2 \
+        libegl-mesa0 \
+        libegl1 \
+        libegl1-mesa \
+        libgtk-3-0 \
+        python2 \
+        python-is-python2 \
+        libgstreamer1.0-0 \
+        libgstreamer-plugins-bad1.0-0 \
+        i2c-tools \
+        bridge-utils
+
+# Additional tools
+RUN apt install -y \
+        bash-completion \
+        build-essential \
+        btrfs-progs \
+        cmake \
+        curl \
+        dnsutils \
+        htop \
+        iotop \
+        isc-dhcp-client \
+        iputils-ping \
+        kmod \
+        linux-firmware \
+        locales \
+        net-tools \
+        netplan.io \
+        pciutils \
+        python3-dev \
+        ssh \
+        sudo \
+        udev \
+        unzip \
+        usbutils \
+        neovim \
+        wpasupplicant \
+        parted \
+        gdisk \
+        e2fsprogs \
+        mtd-utils
+
+# Resize the rootfs
+COPY scripts/resizerootfs.sh /usr/local/bin
+COPY scripts/resizerootfs.service /lib/systemd/system
+RUN systemctl enable resizerootfs.service
+
+# Generate locales
+RUN locale-gen en_US.UTF-8
+
+# Network configuration
+COPY config/netcfg.yaml /etc/netplan/netcfg.yaml
+
+# New user
+# username: jetson
+# password: jetson
+RUN useradd \
+        --create-home \
+        -G sudo \
+        -p $(openssl passwd -6 jetson) \
+        -s /bin/bash \
+        jetson
