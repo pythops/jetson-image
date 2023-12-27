@@ -11,3 +11,9 @@ build-jetson-image *args="" :
 
 flash-jetson-image Jetson-image device:
     @scripts/flash-jetson-image.sh {{ Jetson-image }} {{ device }}
+
+clean:
+    rm -rf base
+    podman rmi -a -f
+    sudo podman rmi -a -f
+    sudo rm -rf jetson.img
