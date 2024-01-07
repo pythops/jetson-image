@@ -17,19 +17,19 @@ if [ "$1" == "20.04" ]; then
         --jobs=4 \
         --arch=arm64 \
         -f Containerfile.rootfs.20_04 \
-        -t jetson-nano-base-image
+        -t jetson-rootfs
 elif [ "$1" == "22.04" ]; then
     podman build \
         --squash-all \
         --jobs=4 \
         --arch=arm64 \
         -f Containerfile.rootfs.22_04 \
-        -t jetson-nano-base-image
+        -t jetson-rootfs
 else
     exit 1
 fi
 
-podman save --format docker-dir -o base jetson-nano-base-image
+podman save --format docker-dir -o base jetson-rootfs
 
 mkdir rootfs
 
