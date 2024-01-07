@@ -7,9 +7,11 @@ name: Build
 env:
   L4T32_BSP: 32.7.4
   L4T35_BSP: 35.4.1
-  UBUNTU: 22.04
 jobs:
   build:
+    strategy:
+      matrix:
+        ubunut_version: ["20.04", "22.04"]
     permissions:
       contents: write
     runs-on: ubuntu-latest
