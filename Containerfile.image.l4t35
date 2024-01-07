@@ -43,7 +43,8 @@ RUN patch /build/Linux_for_Tegra/nv_tegra/nv-apply-debs.sh < /patches/nv-apply-d
 
 # Remove GUI packages
 RUN rm -rf /build/Linux_for_Tegra/nv_tegra/l4t_deb_packages/nvidia-l4t-nvpmodel-gui-tools*.deb && \
-    rm -rf /build/Linux_for_Tegra/nv_tegra/l4t_deb_packages/nvidia-l4t-jetsonpower-gui-tools*.deb
+    rm -rf /build/Linux_for_Tegra/nv_tegra/l4t_deb_packages/nvidia-l4t-jetsonpower-gui-tools*.deb && \
+    rm -rf /build/Linux_for_Tegra/tools/python-jetson-gpio_*_arm64.deb
 
 # Install nvidia packages in the new rootfs
 WORKDIR /build/Linux_for_Tegra/
@@ -54,7 +55,6 @@ RUN chroot /build/Linux_for_Tegra/rootfs/ /bin/bash -c "chown -R jetson:jetson /
 
 # Edit initrd
 WORKDIR /tmp/pythops
-#RUN gzip -d -c /build/Linux_for_Tegra/rootfs/boot/initrd > initrd
 RUN gzip -d -c /build/Linux_for_Tegra/bootloader/l4t_initrd.img > initrd
 WORKDIR /tmp/pythops/lab
 RUN cpio -iv < ../initrd && \

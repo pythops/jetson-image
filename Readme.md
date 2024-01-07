@@ -6,15 +6,15 @@ The need for the minimalist images came from the official jetson images being la
 
 ## Supported boards
 
-- [Jetson nano]()
-- [Jetson nano 2gb]()
-- [Jetson orin nano]()
-- [Jetso agx xavier]()
-- [Jetson xavier nx]()
+- [x] Jetson nano
+- [x] Jetson nano 2gb
+- [x] Jetson orin nano
+- [x] Jetso agx xavier
+- [x] Jetson xavier nx
 
 ## Spec
 
-**OS**: ubuntu 20.04
+**OS**: ubuntu 20.04 & ubuntu 22.04
 
 **L4T**: BSP 32.7.4 & BSP 35.4.1
 
@@ -52,16 +52,23 @@ $ git clone https://github.com/pythops/jetson-image
 $ cd jetson-image
 ```
 
-Then create a new rootfs using the following command:
+Then create a new rootfs with the desired ubuntu version.
 
-```bash
-$ just build-jetson-rootfs
+For ubuntu 20.04
 ```
+just build-jetson-rootfs 20.04
+```
+
+For ubuntu 22.04
+```
+just build-jetson-rootfs 22.04
+```
+
 
 This will create the rootfs in the `rootfs` directory.
 
 > ℹ️
-> You can modify the `Containerfile.rootfs` file to add any tool or configuration that you will need in the final image.
+> You can modify the `Containerfile.rootfs.*` files to add any tool or configuration that you will need in the final image.
 
 Next, use the following command to build the Jetson image:
 
@@ -78,7 +85,7 @@ $ just build-jetson-image -b jetson-orin-nano -d SD
 Run with `-h` for more information
 
 ```bash
-$ just build-jetson-image -h
+just build-jetson-image -h
 ```
 
 The Jetson image will be built and saved in the current directory in a file named `jetson.img`
@@ -88,7 +95,7 @@ The Jetson image will be built and saved in the current directory in a file name
 To flash the jetson image, just run the following command:
 
 ```
-$ sudo just flash-image <jetson image file> <device>
+$ sudo just flash-jetson-image <jetson image file> <device>
 ```
 
 Where `device` is the name of the sdcard/usb identified by your system.
