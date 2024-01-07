@@ -85,42 +85,48 @@ case $board in
 *) ;;
 esac
 
-# Build the image where the jetson image will be built
-if [ "$board" == "jetson-nano" ] || [ "$board" == "jetson-nano-2gb" ]; then
+case "$board" in
+"jetson-nano")
+
     sudo -E XDG_RUNTIME_DIR= podman build \
         --cap-add=all \
         --jobs=4 \
         -f Containerfile.image.l4t32 \
         -t jetson-build-image-l4t32
-else
+
+    sudo podman run \
+        --rm \
+        --privileged \
+        -v .:/jetson \
+        -e JETSON_BOARD="$board" \
+        -e JETSON_REVISION="$revision" \
+        localhost/jetson-build-image-l4t32:latest \
+        create-jetson-image.sh
+    ;;
+
+"jetson-nano-2gb")
+
+    sudo -E XDG_RUNTIME_DIR= podman build \
+        --cap-add=all \
+        --jobs=4 \
+        -f Containerfile.image.l4t32 \
+        -t jetson-build-image-l4t32
+
+    sudo podman run \
+        --rm \
+        --privileged \
+        -v .:/jetson \
+        -e JETSON_BOARD="$board" \
+        localhost/jetson-build-image-l4t32:latest \
+        create-jetson-image.sh
+    ;;
+"jetson-agx-xavier")
     sudo -E XDG_RUNTIME_DIR= podman build \
         --cap-add=all \
         --jobs=4 \
         -f Containerfile.image.l4t35 \
         -t jetson-build-image-l4t35
-fi
 
-# Build the jetson image
-if [ "$board" == "jetson-nano" ]; then
-    sudo podman run \
-        --rm \
-        --privileged \
-        -v .:/jetson \
-        -e JETSON_BOARD="jetson-nano" \
-        -e JETSON_REVISION="$revision" \
-        localhost/jetson-build-image-l4t32:latest \
-        create-jetson-image.sh
-
-elif [ "$board" == "jetson-nano-2gb" ]; then
-    sudo podman run \
-        --rm \
-        --privileged \
-        -v .:/jetson \
-        -e JETSON_BOARD="jetson-nano-2gb" \
-        localhost/jetson-build-image-l4t32:latest \
-        create-jetson-image.sh
-
-else
     sudo podman run \
         --rm \
         --privileged \
@@ -129,5 +135,40 @@ else
         -e JETSON_DEVICE="$device" \
         localhost/jetson-build-image-l4t35:latest \
         create-jetson-image.sh
+    ;;
 
-fi
+"jetson-xavier-nx")
+
+    sudo -E XDG_RUNTIME_DIR= podman build \
+        --cap-add=all \
+        --jobs=4 \
+        -f Containerfile.image.l4t35 \
+        -t jetson-build-image-l4t35
+
+    sudo podman run \
+        --rm \
+        --privileged \
+        -v .:/jetson \
+        -e JETSON_BOARD="$board" \
+        -e JETSON_DEVICE="$device" \
+        localhost/jetson-build-image-l4t35:latest \
+        create-jetson-image.sh
+    ;;
+"jetson-orin-nano")
+
+    sudo -E XDG_RUNTIME_DIR= podman build \
+        --cap-add=all \
+        --jobs=4 \
+        -f Containerfile.image.l4t36 \
+        -t jetson-build-image-l4t36
+
+    sudo podman run \
+        --rm \
+        --privileged \
+        -v .:/jetson \
+        -e JETSON_BOARD="$board" \
+        -e JETSON_DEVICE="$device" \
+        localhost/jetson-build-image-l4t36:latest \
+        create-jetson-image.sh
+    ;;
+esac
