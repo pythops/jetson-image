@@ -14,6 +14,9 @@ jetson-nano)
     printf "Creating image for Jetson nano board (%s revision) \n" "$JETSON_REVISION"
     sudo ./jetson-disk-image-creator.sh -o jetson.img -b jetson-nano -r "$JETSON_REVISION"
     cp jetson.img /jetson/
+    pwd
+    cp /build/Linux_for_Tegra/bootloader/system.img /jetson/
+    cp /build/Linux_for_Tegra/bootloader/boot.img /jetson/
     printf "[OK]\n"
     ;;
 
