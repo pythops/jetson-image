@@ -3,7 +3,7 @@ FROM ubuntu:jammy
 LABEL org.opencontainers.image.authors="Badr @pythops"
 
 # Define the BSP version
-ARG BSP=https://developer.download.nvidia.com/embedded/L4T/r35_Release_v4.1/release/Jetson_Linux_R35.4.1_aarch64.tbz2
+ARG BSP=https://developer.download.nvidia.com/embedded/L4T/r35_Release_v5.0/release/Jetson_Linux_R35.5.0_aarch64.tbz2
 
 # Install different dependencies
 RUN apt update && \
