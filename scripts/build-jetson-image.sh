@@ -87,8 +87,7 @@ esac
 
 case "$board" in
 "jetson-nano")
-
-  sudo -E XDG_RUNTIME_DIR= podman build \
+  sudo -E XDG_RUNTIME_DIR= DBUS_SESSION_BUS_ADDRESS= podman build \
     --cap-add=all \
     --jobs=4 \
     -f Containerfile.image.l4t32 \
@@ -105,8 +104,7 @@ case "$board" in
   ;;
 
 "jetson-nano-2gb")
-
-  sudo -E XDG_RUNTIME_DIR= podman build \
+  sudo -E XDG_RUNTIME_DIR= DBUS_SESSION_BUS_ADDRESS= podman build \
     --cap-add=all \
     --jobs=4 \
     -f Containerfile.image.l4t32 \
@@ -120,8 +118,9 @@ case "$board" in
     localhost/jetson-build-image-l4t32:latest \
     create-jetson-image.sh
   ;;
+
 "jetson-agx-xavier")
-  sudo -E XDG_RUNTIME_DIR= podman build \
+  sudo -E XDG_RUNTIME_DIR= DBUS_SESSION_BUS_ADDRESS= podman build \
     --cap-add=all \
     --jobs=4 \
     -f Containerfile.image.l4t35 \
@@ -138,8 +137,7 @@ case "$board" in
   ;;
 
 "jetson-xavier-nx")
-
-  sudo -E XDG_RUNTIME_DIR= podman build \
+  sudo -E XDG_RUNTIME_DIR= DBUS_SESSION_BUS_ADDRESS= podman build \
     --cap-add=all \
     --jobs=4 \
     -f Containerfile.image.l4t35 \
@@ -154,9 +152,9 @@ case "$board" in
     localhost/jetson-build-image-l4t35:latest \
     create-jetson-image.sh
   ;;
-"jetson-orin-nano")
 
-  sudo -E XDG_RUNTIME_DIR= podman build \
+"jetson-orin-nano")
+  sudo -E XDG_RUNTIME_DIR= DBUS_SESSION_BUS_ADDRESS= podman build \
     --cap-add=all \
     --jobs=4 \
     -f Containerfile.image.l4t36 \
