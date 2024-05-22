@@ -7,7 +7,7 @@ set -e
 supported_boards=("jetson-nano" "jetson-nano-2gb" "jetson-orin-nano" "jetson-agx-xavier" "jetson-xavier-nx")
 
 function usage() {
-  echo "Usage: $0 -b <board> -r <revision> -d <device>"
+  echo "Usage: $0 -b <board> -r <revision> -d <device> -l <l4t>"
   echo ""
   echo "board: the board name, one of the following names:"
   for supported_board in "${supported_boards[@]}"; do
@@ -20,10 +20,12 @@ function usage() {
   echo "    - jetson-orin-nano"
   echo "    - jetson-agx-xavier"
   echo "    - jetson-xavier-nx"
+  echo ""
+  echo "l4t version. The possible values are: 32, 35, 36"
   exit 1
 }
 
-while getopts b:r:d:h opts; do
+while getopts b:r:d:l:h opts; do
   case "$opts" in
 
   b)
@@ -44,6 +46,15 @@ while getopts b:r:d:h opts; do
 
   d)
     device=${OPTARG}
+    ;;
+
+  l)
+    l4t=${OPTARG}
+    if [[ "$l4t" != 32 && "$l4t" != 35 && "$l4t" != 36 ]]; then
+      printf "\e[31mError: Unsupported l4t value: %s \n\e[0m" "$l4t"
+      echo "The possible values are: 32, 35, 36."
+      exit 1
+    fi
     ;;
 
   h)
@@ -85,88 +96,51 @@ case $board in
 *) ;;
 esac
 
-case "$board" in
-"jetson-nano")
-  sudo -E XDG_RUNTIME_DIR= DBUS_SESSION_BUS_ADDRESS= podman build \
-    --cap-add=all \
-    --jobs=4 \
-    -f Containerfile.image.l4t32 \
-    -t jetson-build-image-l4t32
-
-  sudo podman run \
-    --rm \
-    --privileged \
-    -v .:/jetson \
-    -e JETSON_BOARD="$board" \
-    -e JETSON_REVISION="$revision" \
-    localhost/jetson-build-image-l4t32:latest \
-    create-jetson-image.sh
+case $board in
+"jetson-nano" | "jetson-nano-2gb")
+  l4t=32
   ;;
 
-"jetson-nano-2gb")
-  sudo -E XDG_RUNTIME_DIR= DBUS_SESSION_BUS_ADDRESS= podman build \
-    --cap-add=all \
-    --jobs=4 \
-    -f Containerfile.image.l4t32 \
-    -t jetson-build-image-l4t32
-
-  sudo podman run \
-    --rm \
-    --privileged \
-    -v .:/jetson \
-    -e JETSON_BOARD="$board" \
-    localhost/jetson-build-image-l4t32:latest \
-    create-jetson-image.sh
-  ;;
-
-"jetson-agx-xavier")
-  sudo -E XDG_RUNTIME_DIR= DBUS_SESSION_BUS_ADDRESS= podman build \
-    --cap-add=all \
-    --jobs=4 \
-    -f Containerfile.image.l4t35 \
-    -t jetson-build-image-l4t35
-
-  sudo podman run \
-    --rm \
-    --privileged \
-    -v .:/jetson \
-    -e JETSON_BOARD="$board" \
-    -e JETSON_DEVICE="$device" \
-    localhost/jetson-build-image-l4t35:latest \
-    create-jetson-image.sh
-  ;;
-
-"jetson-xavier-nx")
-  sudo -E XDG_RUNTIME_DIR= DBUS_SESSION_BUS_ADDRESS= podman build \
-    --cap-add=all \
-    --jobs=4 \
-    -f Containerfile.image.l4t35 \
-    -t jetson-build-image-l4t35
-
-  sudo podman run \
-    --rm \
-    --privileged \
-    -v .:/jetson \
-    -e JETSON_BOARD="$board" \
-    -e JETSON_DEVICE="$device" \
-    localhost/jetson-build-image-l4t35:latest \
-    create-jetson-image.sh
+"jetson-agx-xavier" | "jetson-xavier-nx")
+  if [[ "$l4t" == "" ]]; then
+    echo "Error: l4t version not provided."
+    echo "l4t must be 32 or 35"
+    exit 1
+  fi
+  if [[ "$l4t" != 32 && "$l4t" != 35 ]]; then
+    echo "The $board only supports 32.x or 35.x versions."
+    exit 1
+  fi
   ;;
 
 "jetson-orin-nano")
-  sudo -E XDG_RUNTIME_DIR= DBUS_SESSION_BUS_ADDRESS= podman build \
-    --cap-add=all \
-    --jobs=4 \
-    -f Containerfile.image.l4t36 \
-    -t jetson-build-image-l4t36
+  if [[ "$l4t" == "" ]]; then
+    echo "Error: l4t version not provided."
+    echo "l4t must be 35 or 36"
+    exit 1
+  fi
 
-  sudo podman run \
-    --rm \
-    --privileged \
-    -v .:/jetson \
-    -e JETSON_BOARD="$board" \
-    -e JETSON_DEVICE="$device" \
-    localhost/jetson-build-image-l4t36:latest \
-    create-jetson-image.sh
+  if [[ "$l4t" != 35 && "$l4t" != 36 ]]; then
+    echo "The $board only supports 35.x or 36.x versions."
+    exit 1
+  fi
+
   ;;
+*) ;;
 esac
+
+sudo -E XDG_RUNTIME_DIR= DBUS_SESSION_BUS_ADDRESS= podman build \
+  --cap-add=all \
+  --jobs=4 \
+  -f Containerfile.image.l4t"$l4t" \
+  -t jetson-build-image-l4t"$l4t"
+
+sudo podman run \
+  --rm \
+  --privileged \
+  -v .:/jetson \
+  -e JETSON_BOARD="$board" \
+  -e JETSON_DEVICE="$device" \
+  -e JETSON_REVISION="$revision" \
+  localhost/jetson-build-image-l4t"$l4t":latest \
+  create-jetson-image.sh
