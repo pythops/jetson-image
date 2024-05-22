@@ -14,9 +14,14 @@ The need for the minimalist images came from the official jetson images being la
 
 ## Spec
 
-**OS**: ubuntu 20.04 & ubuntu 22.04
+**Supported OS**: ubuntu 20.04 & 22.04
 
-**L4T**: BSP 32.7.4 & BSP 35.4.1
+**L4T versions**: 32.x, 35.x, 36.x
+
+> [!IMPORTANT]
+> For jetson orin nano, you might need to update the firmware before being able to use an image based on l4t 36.x
+>
+> check this [link](https://www.jetson-ai-lab.com/initial_setup_jon.html) for more information.
 
 ## Download the prebuilt images
 
@@ -35,7 +40,7 @@ password: jetson
 
 ## Build the jetson image yourself
 
-> ℹ️
+> [!NOTE]
 > Building the jetson image has been tested only on Linux machines.
 
 Building the jetson image is fairly easy. All you need to have is the following tools installed on your machine.
@@ -47,39 +52,40 @@ Building the jetson image is fairly easy. All you need to have is the following 
 
 Start by cloning the repo from github
 
-```
-$ git clone https://github.com/pythops/jetson-image
-$ cd jetson-image
+```bash
+git clone https://github.com/pythops/jetson-image
+cd jetson-image
 ```
 
 Then create a new rootfs with the desired ubuntu version.
 
 For ubuntu 20.04
+
 ```
 just build-jetson-rootfs 20.04
 ```
 
 For ubuntu 22.04
+
 ```
 just build-jetson-rootfs 22.04
 ```
 
-
 This will create the rootfs in the `rootfs` directory.
 
-> ℹ️
+> [!TIP]
 > You can modify the `Containerfile.rootfs.*` files to add any tool or configuration that you will need in the final image.
 
 Next, use the following command to build the Jetson image:
 
 ```
-$ just build-jetson-image -b <board> -r <revision> -d <device>
+$ just build-jetson-image -b <board> -r <revision> -d <device> -l <l4t version>
 ```
 
 For example, to build an image for `jetson-orin-nano` board:
 
 ```bash
-$ just build-jetson-image -b jetson-orin-nano -d SD
+$ just build-jetson-image -b jetson-orin-nano -d SD -l 36
 ```
 
 Run with `-h` for more information
@@ -87,6 +93,11 @@ Run with `-h` for more information
 ```bash
 just build-jetson-image -h
 ```
+
+> [!NOTE]
+> Not every jetson board can be updated to the latest l4t version.
+>
+> Check this [link](https://developer.nvidia.com/embedded/jetson-linux-archive) for more information.
 
 The Jetson image will be built and saved in the current directory in a file named `jetson.img`
 
@@ -101,8 +112,8 @@ $ sudo just flash-jetson-image <jetson image file> <device>
 Where `device` is the name of the sdcard/usb identified by your system.
 For instance, if your sdard is recognized as `/dev/sda`, then replace `device` by `/dev/sda`
 
-> ℹ️
-> There are numerous tools out there to flash images to sd card that you can use. I stick with `dd` as it's simple and does the job
+> [!NOTE]
+> There are numerous tools out there to flash images to sd card that you can use. I stick with `dd` as it's simple and does the job.
 
 ## Nvidia Libraries
 

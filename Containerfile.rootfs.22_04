@@ -33,8 +33,9 @@ RUN apt install -y \
         i2c-tools \
         bridge-utils \
         libffi7 \
+        libvulkan1 \
         libssl1.1 && \
-        apt install -y wget && \
+        apt install -y wget cpio busybox && \
         wget http://launchpadlibrarian.net/354032550/libffi6_3.2.1-8_arm64.deb && \
         dpkg -i libffi6_3.2.1-8_arm64.deb
 
