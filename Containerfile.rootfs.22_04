@@ -92,7 +92,7 @@ COPY config/netcfg.yaml /etc/netplan/netcfg.yaml
 # password: jetson
 RUN useradd \
         --create-home \
-        -G sudo \
+        -G sudo,video,audio \
         -p $(openssl passwd -6 jetson) \
         -s /bin/bash \
         jetson
