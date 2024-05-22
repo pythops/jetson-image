@@ -94,6 +94,11 @@ Run with `-h` for more information
 just build-jetson-image -h
 ```
 
+> [!NOTE]
+> Not every jetson board can be updated to the latest l4t version.
+>
+> Check this [link](https://developer.nvidia.com/embedded/jetson-linux-archive) for more information.
+
 The Jetson image will be built and saved in the current directory in a file named `jetson.img`
 
 ## Flashing the image into your board
