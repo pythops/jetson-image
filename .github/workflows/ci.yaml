@@ -11,7 +11,7 @@ jobs:
   build:
     strategy:
       matrix:
-        ubunut_version: ["20.04", "22.04"]
+        ubuntu_version: ["20.04", "22.04"]
     permissions:
       contents: write
     runs-on: ubuntu-latest
