@@ -8,11 +8,9 @@ env:
   L4T32_BSP: 32.7.4
   L4T35_BSP: 35.5.0
   L4T36_BSP: 36.3.0
+  UBUNTU: 22.04
 jobs:
   build:
-    strategy:
-      matrix:
-        ubuntu_version: ["20.04", "22.04"]
     permissions:
       contents: write
     runs-on: ubuntu-latest
@@ -29,43 +27,54 @@ jobs:
           sudo apt install -y podman qemu-user-static pigz
           sudo systemctl start systemd-binfmt.service
 
+      - name: Free Disk Space
+        uses: jlumbroso/free-disk-space@main
+        with:
+          tool-cache: true
+          android: true
+          dotnet: true
+          haskell: true
+          large-packages: true
+          docker-images: false
+          swap-storage: true
+
       - name: Create rootfs
-        run: just build-jetson-rootfs ${{ matrix.ubuntu_version }}
+        run: just build-jetson-rootfs 22.04
 
       - name: Build jetson image for Jetson nano revision 300
         run: |
           just build-jetson-image  \
             -b jetson-nano \
             -r 300
-          mv jetson.img "jetson-nano-300_${{ matrix.ubuntu_version }}_${L4T32_BSP}.img"
-          pigz "jetson-nano-300_${{ matrix.ubuntu_version }}_${L4T32_BSP}.img"
-          ls -lht "jetson-nano-300_${{ matrix.ubuntu_version }}_${L4T32_BSP}.img.gz"
+          mv jetson.img "jetson-nano-300_${UBUNTU}_${L4T32_BSP}.img"
+          pigz "jetson-nano-300_${UBUNTU}_${L4T32_BSP}.img"
+          ls -lht "jetson-nano-300_${UBUNTU}_${L4T32_BSP}.img.gz"
 
       - name: Build jetson image for Jetson nano revision 200
         run: |
           just build-jetson-image \
             -b jetson-nano \
             -r 200
-          mv jetson.img "jetson-nano-200_${{ matrix.ubuntu_version }}_${L4T32_BSP}.img"
-          pigz "jetson-nano-200_${{ matrix.ubuntu_version }}_${L4T32_BSP}.img"
-          ls -lht "jetson-nano-200_${{ matrix.ubuntu_version }}_${L4T32_BSP}.img.gz"
+          mv jetson.img "jetson-nano-200_${UBUNTU}_${L4T32_BSP}.img"
+          pigz "jetson-nano-200_${UBUNTU}_${L4T32_BSP}.img"
+          ls -lht "jetson-nano-200_${UBUNTU}_${L4T32_BSP}.img.gz"
 
       - name: Build jetson image for Jetson nano revision 100
         run: |
           just build-jetson-image \
             -b jetson-nano \
             -r 100
-          mv jetson.img "jetson-nano-100_${{ matrix.ubuntu_version }}_${L4T32_BSP}.img"
-          pigz "jetson-nano-100_${{ matrix.ubuntu_version }}_${L4T32_BSP}.img"
-          ls -lht "jetson-nano-100_${{ matrix.ubuntu_version }}_${L4T32_BSP}.img.gz"
+          mv jetson.img "jetson-nano-100_${UBUNTU}_${L4T32_BSP}.img"
+          pigz "jetson-nano-100_${UBUNTU}_${L4T32_BSP}.img"
+          ls -lht "jetson-nano-100_${UBUNTU}_${L4T32_BSP}.img.gz"
 
       - name: Build jetson image for Jetson nano 2G
         run: |
           just build-jetson-image \
             -b jetson-nano-2gb
-          mv jetson.img "jetson-nano-2gb_${{ matrix.ubuntu_version }}_${L4T32_BSP}.img"
-          pigz "jetson-nano-2gb_${{ matrix.ubuntu_version }}_${L4T32_BSP}.img"
-          ls -lht "jetson-nano-2gb_${{ matrix.ubuntu_version }}_${L4T32_BSP}.img.gz"
+          mv jetson.img "jetson-nano-2gb_${UBUNTU}_${L4T32_BSP}.img"
+          pigz "jetson-nano-2gb_${UBUNTU}_${L4T32_BSP}.img"
+          ls -lht "jetson-nano-2gb_${UBUNTU}_${L4T32_BSP}.img.gz"
 
       - name: Build jetson image for jetson orin nano SD
         run: |
@@ -73,9 +82,9 @@ jobs:
             -b jetson-orin-nano \
             -d SD \
             -l 36
-          mv jetson.img "jetson-orin-nano_${{ matrix.ubuntu_version }}_${L4T36_BSP}_SD.img"
-          pigz "jetson-orin-nano_${{ matrix.ubuntu_version }}_${L4T36_BSP}_SD.img"
-          ls -lht "jetson-orin-nano_${{ matrix.ubuntu_version }}_${L4T36_BSP}_SD.img.gz"
+          mv jetson.img "jetson-orin-nano_${UBUNTU}_${L4T36_BSP}_SD.img"
+          pigz "jetson-orin-nano_${UBUNTU}_${L4T36_BSP}_SD.img"
+          ls -lht "jetson-orin-nano_${UBUNTU}_${L4T36_BSP}_SD.img.gz"
 
       - name: Build jetson image for jetson orin nano USB
         run: |
@@ -83,9 +92,9 @@ jobs:
             -b jetson-orin-nano \
             -d USB \
             -l 36
-          mv jetson.img "jetson-orin-nano_${{ matrix.ubuntu_version }}_${L4T35_BSP}_USB.img"
-          pigz "jetson-orin-nano_${{ matrix.ubuntu_version }}_${L4T35_BSP}_USB.img"
-          ls -lht "jetson-orin-nano_${{ matrix.ubuntu_version }}_${L4T35_BSP}_USB.img.gz"
+          mv jetson.img "jetson-orin-nano_${UBUNTU}_${L4T35_BSP}_USB.img"
+          pigz "jetson-orin-nano_${UBUNTU}_${L4T35_BSP}_USB.img"
+          ls -lht "jetson-orin-nano_${UBUNTU}_${L4T35_BSP}_USB.img.gz"
 
       - name: Build jetson image for jetson agx xavier SD
         run: |
@@ -93,9 +102,9 @@ jobs:
             -b jetson-agx-xavier \
             -d SD \
             -l 35
-          mv jetson.img "jetson-agx-xavier_${{ matrix.ubuntu_version }}_${L4T35_BSP}_SD.img"
-          pigz "jetson-agx-xavier_${{ matrix.ubuntu_version }}_${L4T35_BSP}_SD.img"
-          ls -lht "jetson-agx-xavier_${{ matrix.ubuntu_version }}_${L4T35_BSP}_SD.img.gz"
+          mv jetson.img "jetson-agx-xavier_${UBUNTU}_${L4T35_BSP}_SD.img"
+          pigz "jetson-agx-xavier_${UBUNTU}_${L4T35_BSP}_SD.img"
+          ls -lht "jetson-agx-xavier_${UBUNTU}_${L4T35_BSP}_SD.img.gz"
 
       - name: Build jetson image for jetson agx xavier USB
         run: |
@@ -103,9 +112,9 @@ jobs:
             -b jetson-agx-xavier \
             -d USB \
             -l 35
-          mv jetson.img "jetson-agx-xavier_${{ matrix.ubuntu_version }}_${L4T35_BSP}_USB.img"
-          pigz "jetson-agx-xavier_${{ matrix.ubuntu_version }}_${L4T35_BSP}_USB.img"
-          ls -lht "jetson-agx-xavier_${{ matrix.ubuntu_version }}_${L4T35_BSP}_USB.img.gz"
+          mv jetson.img "jetson-agx-xavier_${UBUNTU}_${L4T35_BSP}_USB.img"
+          pigz "jetson-agx-xavier_${UBUNTU}_${L4T35_BSP}_USB.img"
+          ls -lht "jetson-agx-xavier_${UBUNTU}_${L4T35_BSP}_USB.img.gz"
 
       - name: Build jetson image for jetson xavier nx SD
         run: |
@@ -113,9 +122,9 @@ jobs:
           -b jetson-xavier-nx \
           -d SD \
           -l 35
-          mv jetson.img "jetson-xavier-nx_${{ matrix.ubuntu_version }}_${L4T35_BSP}_SD.img"
-          pigz "jetson-xavier-nx_${{ matrix.ubuntu_version }}_${L4T35_BSP}_SD.img"
-          ls -lht "jetson-xavier-nx_${{ matrix.ubuntu_version }}_${L4T35_BSP}_SD.img.gz"
+          mv jetson.img "jetson-xavier-nx_${UBUNTU}_${L4T35_BSP}_SD.img"
+          pigz "jetson-xavier-nx_${UBUNTU}_${L4T35_BSP}_SD.img"
+          ls -lht "jetson-xavier-nx_${UBUNTU}_${L4T35_BSP}_SD.img.gz"
 
       - name: Build jetson image for jetson xavier nx USB
         run: |
@@ -123,9 +132,9 @@ jobs:
           -b jetson-xavier-nx \
           -d USB \
           -l 35
-          mv jetson.img "jetson-xavier-nx_${{ matrix.ubuntu_version }}_${L4T35_BSP}_USB.img"
-          pigz "jetson-xavier-nx_${{ matrix.ubuntu_version }}_${L4T35_BSP}_USB.img"
-          ls -lht "jetson-xavier-nx_${{ matrix.ubuntu_version }}_${L4T35_BSP}_USB.img.gz"
+          mv jetson.img "jetson-xavier-nx_${UBUNTU}_${L4T35_BSP}_USB.img"
+          pigz "jetson-xavier-nx_${UBUNTU}_${L4T35_BSP}_USB.img"
+          ls -lht "jetson-xavier-nx_${UBUNTU}_${L4T35_BSP}_USB.img.gz"
 
       - name: Release
         uses: softprops/action-gh-release@v1
