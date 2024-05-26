@@ -1,0 +1,108 @@
+FROM ubuntu:noble
+
+LABEL org.opencontainers.image.authors="Badr @pythops"
+
+# Jammy sources
+RUN echo "" >> /etc/apt/sources.list.d/ubuntu.sources && \
+    echo "Types: deb" >>/etc/apt/sources.list.d/ubuntu.sources && \
+    echo "URIs: http://ports.ubuntu.com/ubuntu-ports/" >> /etc/apt/sources.list.d/ubuntu.sources && \
+    echo "Suites: jammy" >> /etc/apt/sources.list.d/ubuntu.sources && \
+    echo "Components: main universe restricted multiverse" >> /etc/apt/sources.list.d/ubuntu.sources && \
+    echo "Signed-By: /usr/share/keyrings/ubuntu-archive-keyring.gpg" >>/etc/apt/sources.list.d/ubuntu.sources
+
+# Nvidia required packages
+RUN apt update && apt install -y \
+        libgles2 \
+        libpangoft2-1.0-0 \
+        libxkbcommon0 \
+        libwayland-egl1 \
+        libwayland-cursor0 \
+        libunwind8 \
+        libasound2t64 \
+        libpixman-1-0 \
+        libjpeg-turbo8 \
+        libinput10 \
+        libcairo2 \
+        libncursesw6 \
+        libdrm-common \
+        libdrm2 \
+        libegl-mesa0 \
+        libegl1 \
+        libegl1-mesa \
+        libgtk-3-0 \
+        libgstreamer1.0-0 \
+        libgstreamer-plugins-bad1.0-0 \
+        libffi7 \
+        libvulkan1 \
+        libpcre3 \
+        libssl-dev \
+        device-tree-compiler \
+        bridge-utils \
+        i2c-tools \
+        iso-codes \
+        wget \
+        cpio \
+        busybox
+
+# Additional tools
+RUN apt install -y \
+        systemd \
+        bash-completion \
+        build-essential \
+        pkg-config \
+        btrfs-progs \
+        cmake \
+        curl \
+        dnsutils \
+        htop \
+        iotop \
+        isc-dhcp-client \
+        iputils-ping \
+        kmod \
+        linux-firmware \
+        locales \
+        net-tools \
+        netplan.io \
+        pciutils \
+        python3-dev \
+        ssh \
+        sudo \
+        udev \
+        unzip \
+        usbutils \
+        neovim \
+        wpasupplicant \
+        parted \
+        gdisk \
+        fdisk \
+        e2fsprogs \
+        mtd-utils \
+        python-is-python3 \
+        git
+
+RUN wget -q https://github.com/pythops/tegratop/releases/latest/download/tegratop-linux-arm64 -O /usr/local/bin/tegratop && \
+    chmod +x /usr/local/bin/tegratop
+
+# Resize the rootfs
+COPY scripts/resizerootfs.sh /usr/local/bin
+COPY scripts/resizerootfs.service /lib/systemd/system
+
+# Generate locales
+RUN locale-gen en_US.UTF-8
+
+# Network configuration
+COPY config/netcfg.yaml /etc/netplan/netcfg.yaml
+
+# Enable services at startuo
+RUN systemctl enable resizerootfs.service && \
+    systemctl enable systemd-timesyncd
+
+# New user
+# username: jetson
+# password: jetson
+RUN useradd \
+        --create-home \
+        -G sudo,video,audio \
+        -p $(openssl passwd -6 jetson) \
+        -s /bin/bash \
+        jetson
