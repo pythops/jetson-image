@@ -2,14 +2,13 @@ FROM ubuntu:noble
 
 LABEL org.opencontainers.image.authors="Badr @pythops"
 
-RUN cat <<EOF >> /etc/apt/sources.list.d/ubuntu.sources
-# Jammy source
-Types: deb
-URIs: http://ports.ubuntu.com/ubuntu-ports/
-Suites: jammy
-Components: main universe restricted multiverse
-Signed-By: /usr/share/keyrings/ubuntu-archive-keyring.gpg
-EOF
+# Jammy sources
+RUN echo "" >> /etc/apt/sources.list.d/ubuntu.sources && \
+    echo "Types: deb" >>/etc/apt/sources.list.d/ubuntu.sources && \
+    echo "URIs: http://ports.ubuntu.com/ubuntu-ports/" >> /etc/apt/sources.list.d/ubuntu.sources && \
+    echo "Suites: jammy" >> /etc/apt/sources.list.d/ubuntu.sources && \
+    echo "Components: main universe restricted multiverse" >> /etc/apt/sources.list.d/ubuntu.sources && \
+    echo "Signed-By: /usr/share/keyrings/ubuntu-archive-keyring.gpg" >>/etc/apt/sources.list.d/ubuntu.sources
 
 # Nvidia required packages
 RUN apt update && apt install -y \
