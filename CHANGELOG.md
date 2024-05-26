@@ -4,7 +4,12 @@
 
 - ubuntu: 22.04
 - L4T32: 32.7.4
-- L4T35: 35.4.1
+- L4T35: 35.5.0
+- L4T36: 36.3.0
+
+### Added
+
+- ubuntu 24.04
 
 ### Updates
 
@@ -12,7 +17,7 @@
 
 ### Changes
 
-##### L4T 32
+##### Removed
 
 - remove `python-jetson-gpio` debian package. Refer to https://github.com/NVIDIA/jetson-gpio to use gpio
 
