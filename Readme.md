@@ -14,7 +14,7 @@ The need for the minimalist images came from the official jetson images being la
 
 ## Spec
 
-**Supported OS**: ubuntu 20.04 & 22.04
+**Supported Ubuntu releases**: 20.04, 22.04, 24.04
 
 **L4T versions**: 32.x, 35.x, 36.x
 
