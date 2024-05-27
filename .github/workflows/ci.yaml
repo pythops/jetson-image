@@ -100,9 +100,9 @@ jobs:
             -b jetson-orin-nano \
             -d USB \
             -l 36
-          mv jetson.img "jetson-orin-nano_${{ matrix.ubuntu }}_${L4T35_BSP}_USB.img"
-          pigz "jetson-orin-nano_${{ matrix.ubuntu }}_${L4T35_BSP}_USB.img"
-          ls -lht "jetson-orin-nano_${{ matrix.ubuntu }}_${L4T35_BSP}_USB.img.gz"
+          mv jetson.img "jetson-orin-nano_${{ matrix.ubuntu }}_${L4T36_BSP}_USB.img"
+          pigz "jetson-orin-nano_${{ matrix.ubuntu }}_${L4T36_BSP}_USB.img"
+          ls -lht "jetson-orin-nano_${{ matrix.ubuntu }}_${L4T36_BSP}_USB.img.gz"
 
       - name: Build jetson image for jetson agx xavier SD
         if: matrix.ubuntu == '22.04'
