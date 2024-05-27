@@ -15,7 +15,7 @@ jobs:
         ubuntu: ["22.04", "24.04"]
     permissions:
       contents: write
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -149,10 +149,8 @@ jobs:
           ls -lht "jetson-xavier-nx_${{ matrix.ubuntu }}_${L4T35_BSP}_USB.img.gz"
 
       - name: Release
-        uses: softprops/action-gh-release@v1
+        uses: softprops/action-gh-release@v2
         with:
           body: |
             [CHANGELOG.md](${{ github.server_url }}/${{ github.repository }}/blob/master/CHANGELOG.md)
           files: "jetson*"
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
