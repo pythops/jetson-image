@@ -82,7 +82,7 @@ Next, use the following command to build the Jetson image:
 $ just build-jetson-image -b <board> -r <revision> -d <device> -l <l4t version>
 ```
 
-> [!NOTE]
+> [!TIP]
 > If you wish to add some specific nvidia packages that are present in the `common` section from [this link](https://repo.download.nvidia.com/jetson/)
 > such as `libcudnn8` for instance, then edit the file`l4t_packages.txt` in the root directory, add list each package name on separate line.
 
