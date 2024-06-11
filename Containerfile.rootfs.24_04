@@ -108,3 +108,8 @@ RUN useradd \
         -p $(openssl passwd -6 jetson) \
         -s /bin/bash \
         jetson
+
+# Add /usr/local/cuda/bin to the PATH
+RUN echo "if [ -d \"/usr/local/cuda/bin\" ] ; then" >> /home/jetson/.profile  && \
+    echo "  PATH=\"/usr/local/cuda/bin:\$PATH\"" >> /home/jetson/.profile  && \
+    echo "fi" >> /home/jetson/.profile
