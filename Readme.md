@@ -82,6 +82,10 @@ Next, use the following command to build the Jetson image:
 $ just build-jetson-image -b <board> -r <revision> -d <device> -l <l4t version>
 ```
 
+> [!TIP]
+> If you wish to add some specific nvidia packages that are present in the `common` section from [this link](https://repo.download.nvidia.com/jetson/)
+> such as `libcudnn8` for instance, then edit the file`l4t_packages.txt` in the root directory, add list each package name on separate line.
+
 For example, to build an image for `jetson-orin-nano` board:
 
 ```bash
@@ -126,8 +130,6 @@ $ sudo apt install -y libcudnn8 libcudnn8-dev ...
 ## Result
 
 For the jetson nano for instance with the new image, only 150MB of RAM is used, which leaves you with 3.85 GB for your projects !
-
-If you find this helpful, don't forget to give it a star ⭐
 
 ## Looking for professional support ?
 

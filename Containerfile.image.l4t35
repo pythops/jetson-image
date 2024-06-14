@@ -5,6 +5,8 @@ LABEL org.opencontainers.image.authors="Badr @pythops"
 # Define the BSP version
 ARG BSP=https://developer.download.nvidia.com/embedded/L4T/r35_Release_v5.0/release/Jetson_Linux_R35.5.0_aarch64.tbz2
 
+ARG L4T_PACKAGES
+
 # Install different dependencies
 RUN apt update && \
     apt install -y \
@@ -52,6 +54,12 @@ RUN ./apply_binaries.sh
 
 # Fix permissions
 RUN chroot /build/Linux_for_Tegra/rootfs/ /bin/bash -c "chown -R jetson:jetson /home/jetson && chmod 1777 /tmp"
+
+# L4T packages
+RUN mount -t proc proc rootfs/proc/ && \
+    mount -t sysfs sys rootfs/sys && \
+    mount -o bind /dev rootfs/dev && \
+    chroot rootfs /bin/bash -c "echo 'nameserver 8.8.8.8' > /etc/resolv.conf && apt update; apt install -y cuda-toolkit $L4T_PACKAGES"
 
 # Edit initrd
 WORKDIR /tmp/pythops

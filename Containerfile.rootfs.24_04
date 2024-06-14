@@ -78,7 +78,9 @@ RUN apt install -y \
         e2fsprogs \
         mtd-utils \
         python-is-python3 \
-        git
+        git \
+        gpgv1
+
 
 RUN wget -q https://github.com/pythops/tegratop/releases/latest/download/tegratop-linux-arm64 -O /usr/local/bin/tegratop && \
     chmod +x /usr/local/bin/tegratop
@@ -106,3 +108,8 @@ RUN useradd \
         -p $(openssl passwd -6 jetson) \
         -s /bin/bash \
         jetson
+
+# Add /usr/local/cuda/bin to the PATH
+RUN echo "if [ -d \"/usr/local/cuda/bin\" ] ; then" >> /home/jetson/.profile  && \
+    echo "  PATH=\"/usr/local/cuda/bin:\$PATH\"" >> /home/jetson/.profile  && \
+    echo "fi" >> /home/jetson/.profile
