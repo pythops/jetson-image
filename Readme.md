@@ -131,8 +131,6 @@ $ sudo apt install -y libcudnn8 libcudnn8-dev ...
 
 For the jetson nano for instance with the new image, only 150MB of RAM is used, which leaves you with 3.85 GB for your projects !
 
-If you find this helpful, don't forget to give it a star ⭐
-
 ## Looking for professional support ?
 
 If you need more advanced configuration or a custom setup, you can contact me on this address support@pythops.com
