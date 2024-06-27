@@ -59,16 +59,13 @@ cd jetson-image
 
 Then create a new rootfs with the desired ubuntu version.
 
-For ubuntu 20.04
-
-```
-just build-jetson-rootfs 20.04
-```
+> [!NOTE]
+> Only the orin family boards can use ubuntu 24.04
 
 For ubuntu 22.04
 
 ```
-just build-jetson-rootfs 22.04
+just build-jetson-rootfs 20.04
 ```
 
 This will create the rootfs in the `rootfs` directory.
