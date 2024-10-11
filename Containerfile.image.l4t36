@@ -27,7 +27,8 @@ RUN apt update && \
         python3-yaml \
         build-essential \
         lz4 \
-        cpio
+        cpio \
+        xmlstarlet
 
 # Extract the BSP
 RUN mkdir /build && \
