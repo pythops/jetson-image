@@ -42,7 +42,10 @@ RUN apt update && apt install -y \
         iso-codes \
         wget \
         cpio \
-        busybox
+        busybox \
+        nvme-cli \
+        libseat1 \
+        efibootmgr
 
 # Additional tools
 RUN apt install -y \

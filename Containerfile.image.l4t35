@@ -3,7 +3,7 @@ FROM ubuntu:jammy
 LABEL org.opencontainers.image.authors="Badr @pythops"
 
 # Define the BSP version
-ARG BSP=https://developer.download.nvidia.com/embedded/L4T/r35_Release_v5.0/release/Jetson_Linux_R35.5.0_aarch64.tbz2
+ARG BSP=https://developer.nvidia.com/downloads/embedded/l4t/r35_release_v6.0/release/jetson_linux_r35.6.0_aarch64.tbz2
 
 ARG L4T_PACKAGES
 
@@ -59,7 +59,7 @@ RUN chroot /build/Linux_for_Tegra/rootfs/ /bin/bash -c "chown -R jetson:jetson /
 RUN mount -t proc proc rootfs/proc/ && \
     mount -t sysfs sys rootfs/sys && \
     mount -o bind /dev rootfs/dev && \
-    chroot rootfs /bin/bash -c "echo 'nameserver 8.8.8.8' > /etc/resolv.conf && apt update; apt install -y cuda-toolkit $L4T_PACKAGES"
+    chroot rootfs /bin/bash -c "echo 'nameserver 8.8.8.8' > /etc/resolv.conf && apt update; apt install -y cuda-toolkit-11-4 $L4T_PACKAGES"
 
 # Edit initrd
 WORKDIR /tmp/pythops
