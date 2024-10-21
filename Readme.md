@@ -120,10 +120,6 @@ For the `jetson orin nano` for instance with the new image, only 220MB of RAM is
 
 ![](https://github.com/user-attachments/assets/7404e20f-3ccd-42c7-b8d6-e93c635aa6f0)
 
-## Looking for professional support ?
-
-If you need more advanced configuration or a custom setup, you can contact me on this address support@pythops.com
-
 ## License
 
 AGPLv3
