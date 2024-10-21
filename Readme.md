@@ -1,5 +1,10 @@
 # Nvidia Jetson Minimalist Images
 
+[![Discord][discord-badge]][chat-url]
+
+[discord-badge]: https://img.shields.io/badge/Discord-chat-5865F2?style=for-the-badge&logo=discord
+[chat-url]: https://discord.gg/wA7Pg9H6
+
 ## Motivation
 
 The need for the minimalist images came from the official jetson images being large in size and containing pre-installed packages that are not necessary, resulting in the consumption of valuable disk space and memory.
