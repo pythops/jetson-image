@@ -23,22 +23,7 @@ The need for the minimalist images came from the official jetson images being la
 >
 > check this [link](https://www.jetson-ai-lab.com/initial_setup_jon.html) for more information.
 
-## Download the prebuilt images
-
-The prebuilt images are available in the GitHub release page 👉 [here](https://github.com/pythops/jetson-image/releases)
-
-To be able to decompress the images, you must have [lrzip](https://github.com/ckolivas/lrzip) installed.
-
-After the image is decompressed, follow the section below to flash the image to your board.
-
-The default login is:
-
-```
-username: jetson
-password: jetson
-```
-
-## Build the jetson image yourself
+## Build the jetson image
 
 > [!NOTE]
 > Building the jetson image has been tested only on Linux machines.
@@ -62,10 +47,10 @@ Then create a new rootfs with the desired ubuntu version.
 > [!NOTE]
 > Only the orin family boards can use ubuntu 24.04
 
-For ubuntu 22.04
+For ubuntu 24.04
 
 ```
-just build-jetson-rootfs 20.04
+just build-jetson-rootfs 24.04
 ```
 
 This will create the rootfs in the `rootfs` directory.
@@ -126,7 +111,7 @@ $ sudo apt install -y libcudnn8 libcudnn8-dev ...
 
 ## Result
 
-For the jetson nano for instance with the new image, only 150MB of RAM is used, which leaves you with 3.85 GB for your projects !
+For the `jetson orin nano` for instance with the new image, only 220MB of RAM is used, which leaves plenty of RAM for your projects !
 
 ## Looking for professional support ?
 
