@@ -14,6 +14,7 @@ The need for the minimalist images came from the official jetson images being la
 - [x] Jetson nano
 - [x] Jetson nano 2gb
 - [x] Jetson orin nano
+- [x] Jetson agx orin
 - [x] Jetso agx xavier
 - [x] Jetson xavier nx
 
