@@ -41,7 +41,8 @@ RUN chmod 4755 /build/Linux_for_Tegra/rootfs/usr/bin/sudo
 # Different patches
 COPY patches /patches
 RUN patch /build/Linux_for_Tegra/nv_tegra/nv-apply-debs.sh < /patches/nv-apply-debs.diff && \
-    patch /build/Linux_for_Tegra/tools/jetson-disk-image-creator.sh < /patches/jetson-disk-image-creator.diff
+    patch /build/Linux_for_Tegra/tools/jetson-disk-image-creator.sh < /patches/jetson-disk-image-creator.diff && \
+    patch /build/Linux_for_Tegra/tools/jetson-disk-image-creator.sh < /patches/agx-orin.diff
 
 # Remove GUI packages
 RUN rm -rf /build/Linux_for_Tegra/nv_tegra/l4t_deb_packages/nvidia-l4t-nvpmodel-gui-tools*.deb && \
