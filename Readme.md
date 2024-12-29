@@ -3,7 +3,7 @@
 [![Discord][discord-badge]][chat-url]
 
 [discord-badge]: https://img.shields.io/badge/Discord-chat-5865F2?style=for-the-badge&logo=discord
-[chat-url]: https://discord.gg/wA7Pg9H6
+[chat-url]: https://discord.gg/mfSRc9Jann
 
 ## Motivation
 
