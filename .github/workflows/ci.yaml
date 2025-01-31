@@ -11,8 +11,64 @@ env:
 jobs:
   build:
     strategy:
+      fail-fast: false
       matrix:
-        ubuntu: ["22.04", "24.04"]
+        include:
+          # Ubuntu 22.04 + L4T 32 (Nano family)
+          - ubuntu: "22.04"
+            board: "jetson-nano"
+            revision: "300"
+            l4t_version: "32"
+            l4t_bsp: ${L4T32_BSP}
+          - ubuntu: "22.04"
+            board: "jetson-nano"
+            revision: "200"
+            l4t_version: "32"
+            l4t_bsp: ${L4T32_BSP}
+          - ubuntu: "22.04"
+            board: "jetson-nano"
+            revision: "100"
+            l4t_version: "32"
+            l4t_bsp: ${L4T32_BSP}
+          - ubuntu: "22.04"
+            board: "jetson-nano-2gb"
+            l4t_version: "32"
+            l4t_bsp: ${L4T32_BSP}
+
+          # Ubuntu 24.04 + L4T 36 (Orin family)
+          - ubuntu: "24.04"
+            board: "jetson-orin-nano"
+            device: "SD"
+            l4t_version: "36"
+            l4t_bsp: ${L4T36_BSP}
+          - ubuntu: "24.04"
+            board: "jetson-orin-nano"
+            device: "USB"
+            l4t_version: "36"
+            l4t_bsp: ${L4T36_BSP}
+
+          # Ubuntu 22.04 + L4T 35 (Xavier family)
+          - ubuntu: "22.04"
+            board: "jetson-agx-xavier"
+            device: "SD"
+            l4t_version: "35"
+            l4t_bsp: ${L4T35_BSP}
+          - ubuntu: "22.04"
+            board: "jetson-agx-xavier"
+            device: "USB"
+            l4t_version: "35"
+            l4t_bsp: ${L4T35_BSP}
+          - ubuntu: "22.04"
+            board: "jetson-xavier-nx"
+            device: "SD"
+            l4t_version: "35"
+            l4t_bsp: ${L4T35_BSP}
+          - ubuntu: "22.04"
+            board: "jetson-xavier-nx"
+            device: "USB"
+            l4t_version: "35"
+            l4t_bsp: ${L4T35_BSP}
+
     permissions:
       contents: write
     runs-on: ubuntu-latest
@@ -43,110 +99,21 @@ jobs:
       - name: Create rootfs
         run: just build-jetson-rootfs ${{ matrix.ubuntu }}
 
-      - name: Build jetson image for Jetson nano revision 300
-        if: matrix.ubuntu == '22.04'
-        run: |
-          just build-jetson-image  \
-            -b jetson-nano \
-            -r 300
-          mv jetson.img "jetson-nano-300_${{ matrix.ubuntu }}_${L4T32_BSP}.img"
-          pigz "jetson-nano-300_${{ matrix.ubuntu }}_${L4T32_BSP}.img"
-          ls -lht "jetson-nano-300_${{ matrix.ubuntu }}_${L4T32_BSP}.img.gz"
-
-      - name: Build jetson image for Jetson nano revision 200
-        if: matrix.ubuntu == '22.04'
+      - name: Build jetson image
         run: |
           just build-jetson-image \
-            -b jetson-nano \
-            -r 200
-          mv jetson.img "jetson-nano-200_${{ matrix.ubuntu }}_${L4T32_BSP}.img"
-          pigz "jetson-nano-200_${{ matrix.ubuntu }}_${L4T32_BSP}.img"
-          ls -lht "jetson-nano-200_${{ matrix.ubuntu }}_${L4T32_BSP}.img.gz"
+            -b ${{ matrix.board }} \
+            ${{ matrix.revision && format('-r {0}', matrix.revision) || '' }} \
+            ${{ matrix.device && format('-d {0}', matrix.device) || '' }} \
+            ${{ matrix.l4t_version && format('-l {0}', matrix.l4t_version) || '' }}
 
-      - name: Build jetson image for Jetson nano revision 100
-        if: matrix.ubuntu == '22.04'
-        run: |
-          just build-jetson-image \
-            -b jetson-nano \
-            -r 100
-          mv jetson.img "jetson-nano-100_${{ matrix.ubuntu }}_${L4T32_BSP}.img"
-          pigz "jetson-nano-100_${{ matrix.ubuntu }}_${L4T32_BSP}.img"
-          ls -lht "jetson-nano-100_${{ matrix.ubuntu }}_${L4T32_BSP}.img.gz"
+          IMAGE_NAME="${{ matrix.board }}"
+          [[ -n "${{ matrix.revision }}" ]] && IMAGE_NAME="${IMAGE_NAME}-${{ matrix.revision }}"
+          [[ -n "${{ matrix.device }}" ]] && IMAGE_NAME="${IMAGE_NAME}_${{ matrix.device }}"
 
-      - name: Build jetson image for Jetson nano 2G
-        if: matrix.ubuntu == '22.04'
-        run: |
-          just build-jetson-image \
-            -b jetson-nano-2gb
-          mv jetson.img "jetson-nano-2gb_${{ matrix.ubuntu }}_${L4T32_BSP}.img"
-          pigz "jetson-nano-2gb_${{ matrix.ubuntu }}_${L4T32_BSP}.img"
-          ls -lht "jetson-nano-2gb_${{ matrix.ubuntu }}_${L4T32_BSP}.img.gz"
-
-      - name: Build jetson image for jetson orin nano SD
-        if: matrix.ubuntu == '24.04'
-        run: |
-          just build-jetson-image \
-            -b jetson-orin-nano \
-            -d SD \
-            -l 36
-          mv jetson.img "jetson-orin-nano_${{ matrix.ubuntu }}_${L4T36_BSP}_SD.img"
-          pigz "jetson-orin-nano_${{ matrix.ubuntu }}_${L4T36_BSP}_SD.img"
-          ls -lht "jetson-orin-nano_${{ matrix.ubuntu }}_${L4T36_BSP}_SD.img.gz"
-
-      - name: Build jetson image for jetson orin nano USB
-        if: matrix.ubuntu == '24.04'
-        run: |
-          just build-jetson-image \
-            -b jetson-orin-nano \
-            -d USB \
-            -l 36
-          mv jetson.img "jetson-orin-nano_${{ matrix.ubuntu }}_${L4T36_BSP}_USB.img"
-          pigz "jetson-orin-nano_${{ matrix.ubuntu }}_${L4T36_BSP}_USB.img"
-          ls -lht "jetson-orin-nano_${{ matrix.ubuntu }}_${L4T36_BSP}_USB.img.gz"
-
-      - name: Build jetson image for jetson agx xavier SD
-        if: matrix.ubuntu == '22.04'
-        run: |
-          just build-jetson-image \
-            -b jetson-agx-xavier \
-            -d SD \
-            -l 35
-          mv jetson.img "jetson-agx-xavier_${{ matrix.ubuntu }}_${L4T35_BSP}_SD.img"
-          pigz "jetson-agx-xavier_${{ matrix.ubuntu }}_${L4T35_BSP}_SD.img"
-          ls -lht "jetson-agx-xavier_${{ matrix.ubuntu }}_${L4T35_BSP}_SD.img.gz"
-
-      - name: Build jetson image for jetson agx xavier USB
-        if: matrix.ubuntu == '22.04'
-        run: |
-          just build-jetson-image \
-            -b jetson-agx-xavier \
-            -d USB \
-            -l 35
-          mv jetson.img "jetson-agx-xavier_${{ matrix.ubuntu }}_${L4T35_BSP}_USB.img"
-          pigz "jetson-agx-xavier_${{ matrix.ubuntu }}_${L4T35_BSP}_USB.img"
-          ls -lht "jetson-agx-xavier_${{ matrix.ubuntu }}_${L4T35_BSP}_USB.img.gz"
-
-      - name: Build jetson image for jetson xavier nx SD
-        if: matrix.ubuntu == '22.04'
-        run: |
-          just build-jetson-image \
-          -b jetson-xavier-nx \
-          -d SD \
-          -l 35
-          mv jetson.img "jetson-xavier-nx_${{ matrix.ubuntu }}_${L4T35_BSP}_SD.img"
-          pigz "jetson-xavier-nx_${{ matrix.ubuntu }}_${L4T35_BSP}_SD.img"
-          ls -lht "jetson-xavier-nx_${{ matrix.ubuntu }}_${L4T35_BSP}_SD.img.gz"
-
-      - name: Build jetson image for jetson xavier nx USB
-        if: matrix.ubuntu == '22.04'
-        run: |
-          just build-jetson-image \
-          -b jetson-xavier-nx \
-          -d USB \
-          -l 35
-          mv jetson.img "jetson-xavier-nx_${{ matrix.ubuntu }}_${L4T35_BSP}_USB.img"
-          pigz "jetson-xavier-nx_${{ matrix.ubuntu }}_${L4T35_BSP}_USB.img"
-          ls -lht "jetson-xavier-nx_${{ matrix.ubuntu }}_${L4T35_BSP}_USB.img.gz"
+          mv jetson.img "${IMAGE_NAME}_${{ matrix.ubuntu }}_${{ matrix.l4t_bsp }}.img"
+          pigz "${IMAGE_NAME}_${{ matrix.ubuntu }}_${{ matrix.l4t_bsp }}.img"
+          ls -lht "${IMAGE_NAME}_${{ matrix.ubuntu }}_${{ matrix.l4t_bsp }}.img.gz"
 
       - name: Release
         uses: softprops/action-gh-release@v2
