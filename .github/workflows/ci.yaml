@@ -111,9 +111,21 @@ jobs:
           [[ -n "${{ matrix.revision }}" ]] && IMAGE_NAME="${IMAGE_NAME}-${{ matrix.revision }}"
           [[ -n "${{ matrix.device }}" ]] && IMAGE_NAME="${IMAGE_NAME}_${{ matrix.device }}"
 
-          mv jetson.img "${IMAGE_NAME}_${{ matrix.ubuntu }}_${{ matrix.l4t_bsp }}.img"
-          pigz "${IMAGE_NAME}_${{ matrix.ubuntu }}_${{ matrix.l4t_bsp }}.img"
-          ls -lht "${IMAGE_NAME}_${{ matrix.ubuntu }}_${{ matrix.l4t_bsp }}.img.gz"
+          IMAGE_NAME="${IMAGE_NAME}-${{ matrix.ubuntu }}-${{ matrix.l4t_bsp }}"
+          echo "IMAGE_NAME=${IMAGE_NAME}" >> $GITHUB_ENV
+
+          mv jetson.img "${IMAGE_NAME}.img"
+          pigz "${IMAGE_NAME}.img"
+          ls -lht "${IMAGE_NAME}.img.gz"
+
+      - name: Upload artifact
+        uses: actions/upload-artifact@v4
+        timeout-minutes: 120
+        with:
+          name: ${{ env.IMAGE_NAME }}
+          path: "jetson*"
+          if-no-files-found: error
+          retention-days: 7
 
       - name: Release
         uses: softprops/action-gh-release@v2
@@ -121,4 +133,4 @@ jobs:
         with:
           body: |
             [CHANGELOG.md](${{ github.server_url }}/${{ github.repository }}/blob/master/CHANGELOG.md)
-          files: "jetson*"
+          files: ${{ env.IMAGE_NAME }}
