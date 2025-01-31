@@ -1,8 +1,8 @@
 ---
 on:
+  workflow_dispatch:
+  pull_request:
   push:
-    tags:
-      - "*"
 name: Build
 env:
   L4T32_BSP: 32.7.4
@@ -117,6 +117,7 @@ jobs:
 
       - name: Release
         uses: softprops/action-gh-release@v2
+        if: startsWith(github.ref, 'refs/tags/')
         with:
           body: |
             [CHANGELOG.md](${{ github.server_url }}/${{ github.repository }}/blob/master/CHANGELOG.md)
