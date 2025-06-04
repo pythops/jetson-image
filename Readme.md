@@ -39,7 +39,7 @@ Building the jetson image is fairly easy. All you need to have is the following 
 - [podman](https://github.com/containers/podman)
 - [just](https://github.com/casey/just)
 - [jq](https://github.com/stedolan/jq)
-- [qemu-user-static]()
+- [qemu-user-static](https://github.com/multiarch/qemu-user-static)
 
 Start by cloning the repo from github
 
