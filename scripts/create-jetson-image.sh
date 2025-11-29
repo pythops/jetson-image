@@ -24,6 +24,13 @@ jetson-orin-nano)
     printf "[OK]\n"
     ;;
 
+jetson-orin-nano-super)
+    printf "Creating image for Jetson orin nano board (SUPER variant) \n"
+    sudo ./jetson-disk-image-creator.sh -o jetson.img -b jetson-orin-nano-devkit-super -d "$JETSON_DEVICE"
+    cp jetson.img /jetson/
+    printf "[OK]\n"
+    ;;
+
 jetson-xavier-nx)
     printf "Creating image for Jetson xavier nx board \n"
     sudo ./jetson-disk-image-creator.sh -o jetson.img -b jetson-xavier-nx-devkit -d "$JETSON_DEVICE"
