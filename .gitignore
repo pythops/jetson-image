@@ -2,3 +2,4 @@
 *.vagrant/
 jetson.img*
 rootfs/
+config/iwd/*

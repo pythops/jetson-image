@@ -1,4 +1,4 @@
-FROM ubuntu:noble
+FROM ubuntu:24.04
 
 LABEL org.opencontainers.image.authors="Badr @pythops"
 
@@ -36,6 +36,7 @@ RUN apt update && apt install -y \
         libvulkan1 \
         libpcre3 \
         libssl-dev \
+        libnl-route-3-200 \
         device-tree-compiler \
         bridge-utils \
         i2c-tools \
@@ -59,13 +60,11 @@ RUN apt install -y \
         dnsutils \
         htop \
         iotop \
-        isc-dhcp-client \
         iputils-ping \
         kmod \
         linux-firmware \
         locales \
         net-tools \
-        netplan.io \
         pciutils \
         python3-dev \
         ssh \
@@ -74,7 +73,6 @@ RUN apt install -y \
         unzip \
         usbutils \
         neovim \
-        wpasupplicant \
         parted \
         gdisk \
         fdisk \
@@ -83,11 +81,17 @@ RUN apt install -y \
         python-is-python3 \
         git \
         gpgv1 \
-        fwupd
+        fwupd \
+        iwd
 
 
+# Tegratop
 RUN wget -q https://github.com/pythops/tegratop/releases/latest/download/tegratop-linux-arm64 -O /usr/local/bin/tegratop && \
     chmod +x /usr/local/bin/tegratop
+
+# Impala
+RUN wget -q https://github.com/pythops/impala/releases/latest/download/impala-aarch64-unknown-linux-musl  -O /usr/local/bin/impala && \
+    chmod +x /usr/local/bin/impala
 
 # Resize the rootfs
 COPY scripts/resizerootfs.sh /usr/local/bin
@@ -96,12 +100,14 @@ COPY scripts/resizerootfs.service /lib/systemd/system
 # Generate locales
 RUN locale-gen en_US.UTF-8
 
-# Network configuration
-COPY config/netcfg.yaml /etc/netplan/netcfg.yaml
-
 # Enable services at startuo
 RUN systemctl enable resizerootfs.service && \
-    systemctl enable systemd-timesyncd
+    systemctl enable systemd-timesyncd && \
+    systemctl enable iwd
+
+# WiFi Networks config
+COPY config/iwd/networks/* /var/lib/iwd/
+COPY config/iwd/main.conf /etc/iwd/main.conf
 
 # New user
 # username: jetson
