@@ -85,9 +85,6 @@ COPY scripts/resizerootfs.service /lib/systemd/system
 # Generate locales
 RUN locale-gen en_US.UTF-8
 
-# Network configuration
-COPY config/netcfg.yaml /etc/netplan/netcfg.yaml
-
 # Enable services at startuo
 RUN systemctl enable resizerootfs.service && \
     systemctl enable systemd-timesyncd && \

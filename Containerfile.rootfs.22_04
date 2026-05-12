@@ -35,6 +35,13 @@ RUN apt install -y \
         libgtk-3-0 \
         libgstreamer1.0-0 \
         libgstreamer-plugins-bad1.0-0 \
+        libnl-route-3-200 \
+        libseat1 \
+        efibootmgr \
+        busybox \
+        wget \
+        cpio \
+        nvme-cli \
         i2c-tools \
         bridge-utils \
         libffi7 \
@@ -46,7 +53,7 @@ RUN apt install -y \
 
 
 # Additional tools
-RUN apt install -y \
+RUN DEBIAN_FRONTEND=noninteractive apt install -y \
         systemd \
         bash-completion \
         build-essential \
@@ -94,9 +101,6 @@ COPY scripts/resizerootfs.service /lib/systemd/system
 
 # Generate locales
 RUN locale-gen en_US.UTF-8
-
-# Network configuration
-COPY config/netcfg.yaml /etc/netplan/netcfg.yaml
 
 # Enable services at startuo
 RUN systemctl enable resizerootfs.service && \
