@@ -43,9 +43,9 @@ git clone https://github.com/pythops/jetson-image
 cd jetson-image
 ```
 
-### 1. Create a new rootfs
+### I. Create a new rootfs
 
-#### 1. WiFi configuration (Optional)
+##### 1. WiFi configuration (Optional)
 
 The Wi-Fi configuration must be set up before running the build command so it can be properly baked into the image.
 
@@ -59,7 +59,7 @@ Passphrase=<WiFI Password>
 AutoConnect=true
 ```
 
-#### 2. Build the rootfs
+##### 2. Build the rootfs
 
 > [!NOTE]
 > Only the orin family boards can use ubuntu 24.04
@@ -72,12 +72,18 @@ just build-jetson-rootfs <ubuntu_version>
 
 This will create the rootfs in the `rootfs` directory.
 
-`ubuntu_version` can take on these values: 20.04, 22.04, 24.04
+`ubuntu_version` can take on these values: `20.04`, `22.04`, `24.04`
+
+for example, to build roorfs based on `24.04`:
+
+```
+just build-jetson-rootfs 24.04
+```
 
 > [!NOTE]
 > You can modify the `Containerfile.rootfs.*` files to add any tool or configuration that you will need in the final image.
 
-### 2. Build the Jetson image:
+### II. Build the Jetson image:
 
 ```
 
