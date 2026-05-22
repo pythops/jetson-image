@@ -147,9 +147,12 @@ username: jetson
 password: jetson
 ```
 
+> [!NOTE]
+> ssh server is running by default and listen on the port 22
+
 #### Nvidia Libraries
 
-Once you boot the board with the new image, then you can install Nvidia libraries using `apt`
+Nvidia libraries can be installed using `apt`
 
 ```bash
 $ sudo apt install -y libcudnn8 libcudnn8-dev ...
@@ -157,8 +160,9 @@ $ sudo apt install -y libcudnn8 libcudnn8-dev ...
 
 #### New tools
 
-- [impala](https://github.com/pythops/impala): A TUI for managing wifi on Linux.
-- [tegratop](https://github.com/pythops/tegratop): A Comprehensive TUI monitoring tool for Nvidia jetson boards.
+[impala](https://github.com/pythops/impala): A TUI for managing WiFi.
+
+[tegratop](https://github.com/pythops/tegratop): A Comprehensive TUI monitoring tool for Nvidia jetson boards.
 
 <br>
 
