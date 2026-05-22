@@ -43,6 +43,8 @@ git clone https://github.com/pythops/jetson-image
 cd jetson-image
 ```
 
+<br>
+
 ### I. Create a new rootfs
 
 ##### 1. WiFi configuration (Optional)
@@ -83,6 +85,8 @@ just build-jetson-rootfs 24.04
 > [!NOTE]
 > You can modify the `Containerfile.rootfs.*` files to add any tool or configuration that you will need in the final image.
 
+<br>
+
 ### II. Build the Jetson image:
 
 ```
@@ -114,7 +118,9 @@ just build-jetson-image -h
 
 The Jetson image will be built and saved in the current directory in a file named `jetson.img`
 
-## Flashing the image into your board
+<br>
+
+## III. Flashing the image into your board
 
 To flash the jetson image, just run the following command:
 
@@ -128,13 +134,33 @@ For instance, if your sdard is recognized as `/dev/sda`, then replace `device` b
 > [!NOTE]
 > There are numerous tools out there to flash images to sd card that you can use. I stick with `dd` as it's simple and does the job.
 
-## Nvidia Libraries
+<br>
+
+## IV. Boot the board
+
+#### Login
+
+Once you boot the board, you can login with:
+
+```
+username: jetson
+password: jetson
+```
+
+#### Nvidia Libraries
 
 Once you boot the board with the new image, then you can install Nvidia libraries using `apt`
 
 ```bash
 $ sudo apt install -y libcudnn8 libcudnn8-dev ...
 ```
+
+#### New tools
+
+- [impala](https://github.com/pythops/impala): A TUI for managing wifi on Linux.
+- [tegratop](https://github.com/pythops/tegratop): A Comprehensive TUI monitoring tool for Nvidia jetson boards.
+
+<br>
 
 ## Result
 
