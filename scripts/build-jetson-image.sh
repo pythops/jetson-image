@@ -51,9 +51,9 @@ while getopts b:r:d:l:h opts; do
 
     l)
         l4t=${OPTARG}
-        if [[ "$l4t" != 32 && "$l4t" != 35 && "$l4t" != 36 ]]; then
+        if [[ "$l4t" != 32 && "$l4t" != 35 && "$l4t" != 36 && "$l4t" != 39 ]]; then
             printf "\e[31mError: Unsupported l4t value: %s \n\e[0m" "$l4t"
-            echo "The possible values are: 32, 35, 36."
+            echo "The possible values are: 32, 35, 36, 39."
             exit 1
         fi
         ;;
@@ -117,12 +117,12 @@ case $board in
 "jetson-orin-nano" | "jetson-agx-orin")
     if [[ "$l4t" == "" ]]; then
         echo "Error: l4t version not provided."
-        echo "l4t must be 35 or 36"
+        echo "l4t must be 35, 36 or 39"
         exit 1
     fi
 
-    if [[ "$l4t" != 35 && "$l4t" != 36 ]]; then
-        echo "The $board only supports 35.x or 36.x versions."
+    if [[ "$l4t" != 35 && "$l4t" != 36 && "$l4t" != 39 ]]; then
+        echo "The $board only supports 35.x, 36.x  or 39.x versions."
         exit 1
     fi
 
