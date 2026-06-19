@@ -1,0 +1,130 @@
+FROM ubuntu:26.04
+
+LABEL org.opencontainers.image.authors="Badr @pythops"
+
+# Noble sources
+RUN echo "" >> /etc/apt/sources.list.d/ubuntu.sources && \
+    echo "Types: deb" >>/etc/apt/sources.list.d/ubuntu.sources && \
+    echo "URIs: http://ports.ubuntu.com/ubuntu-ports/" >> /etc/apt/sources.list.d/ubuntu.sources && \
+    echo "Suites: noble" >> /etc/apt/sources.list.d/ubuntu.sources && \
+    echo "Components: main universe restricted multiverse" >> /etc/apt/sources.list.d/ubuntu.sources && \
+    echo "Signed-By: /usr/share/keyrings/ubuntu-archive-keyring.gpg" >>/etc/apt/sources.list.d/ubuntu.sources
+
+# Nvidia required packages
+RUN apt update && apt install -y \
+        libgles2 \
+        libpangoft2-1.0-0 \
+        libxkbcommon0 \
+        libwayland-egl1 \
+        libwayland-cursor0 \
+        libunwind8 \
+        libasound2t64 \
+        libpixman-1-0 \
+        libjpeg-turbo8 \
+        libinput10 \
+        libcairo2 \
+        libncursesw6 \
+        libdrm-common \
+        libdrm2 \
+        libegl-mesa0 \
+        libegl1 \
+        libgtk-3-0 \
+        libgstreamer1.0-0 \
+        libgstreamer-plugins-bad1.0-0 \
+        libvulkan1 \
+        libssl-dev \
+        libnl-route-3-200 \
+        device-tree-compiler \
+        libwayland-server0 \
+        libc6-arm64-cross \
+        libpcre3 \
+        rsync \
+        python3-matplotlib \
+        python3-tk \
+        gir1.2-appindicator3-0.1 \
+        python3-gi \
+        bridge-utils \
+        i2c-tools \
+        iso-codes \
+        wget \
+        cpio \
+        busybox \
+        nvme-cli \
+        libseat1 \
+        efibootmgr
+
+# Additional tools
+RUN DEBIAN_FRONTEND=noninteractive apt install -y \
+        systemd \
+        bash-completion \
+        build-essential \
+        pkg-config \
+        btrfs-progs \
+        cmake \
+        curl \
+        dnsutils \
+        htop \
+        iotop \
+        iputils-ping \
+        kmod \
+        linux-firmware \
+        locales \
+        net-tools \
+        pciutils \
+        python3-dev \
+        ssh \
+        sudo \
+        udev \
+        unzip \
+        usbutils \
+        neovim \
+        parted \
+        gdisk \
+        fdisk \
+        e2fsprogs \
+        mtd-utils \
+        python-is-python3 \
+        git \
+        gpgv1 \
+        fwupd \
+        iwd
+
+
+# Tegratop
+RUN wget -q https://github.com/pythops/tegratop/releases/latest/download/tegratop-linux-arm64 -O /usr/local/bin/tegratop && \
+    chmod +x /usr/local/bin/tegratop
+
+# Impala
+RUN wget -q https://github.com/pythops/impala/releases/latest/download/impala-aarch64-unknown-linux-musl  -O /usr/local/bin/impala && \
+    chmod +x /usr/local/bin/impala
+
+# Resize the rootfs
+COPY scripts/resizerootfs.sh /usr/local/bin
+COPY scripts/resizerootfs.service /lib/systemd/system
+
+# Generate locales
+RUN locale-gen en_US.UTF-8
+
+# Enable services at startuo
+RUN systemctl enable resizerootfs.service && \
+    systemctl enable systemd-timesyncd && \
+    systemctl enable iwd
+
+# WiFi Networks config
+COPY config/iwd/networks/* /var/lib/iwd/
+COPY config/iwd/main.conf /etc/iwd/main.conf
+
+# New user
+# username: jetson
+# password: jetson
+RUN useradd \
+        --create-home \
+        -G sudo,video,audio \
+        -p $(openssl passwd -6 jetson) \
+        -s /bin/bash \
+        jetson
+
+# Add /usr/local/cuda/bin to the PATH
+RUN echo "if [ -d \"/usr/local/cuda/bin\" ] ; then" >> /home/jetson/.profile  && \
+    echo "  PATH=\"/usr/local/cuda/bin:\$PATH\"" >> /home/jetson/.profile  && \
+    echo "fi" >> /home/jetson/.profile
